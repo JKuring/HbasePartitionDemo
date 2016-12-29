@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hbase:beans
+        xmlns:hbase="http://www.springframework.org/schema/beans"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns:hdp="http://www.springframework.org/schema/hadoop"
+
+
+        xsi:schemaLocation="http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+         http://www.springframework.org/schema/hadoop
+          http://www.springframework.org/schema/hadoop/spring-hadoop.xsd">
+
+
+    <hdp:configuration resources="classpath:conf/hbase/hbase-site.xml"/>
+    <hdp:hbase-configuration configuration-ref="hadoopConfiguration"/>
+
+    <!--<hdp:configuration>-->
+    <!--fs.defaultFS=hdfs://localhost:8020-->
+    <!--hadoop.tmp.dir=/tmp/hadoop-->
+    <!--electric=sea-->
+    <!--</hdp:configuration>-->
+
+    <hbase:bean id="coprocessor" class="org.apache.hadoop.hbase.coprocessor.AggregateImplementation"/>
+    <hbase:bean id="splitPolicy" class="org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy"/>
+    <!--<hbase:bean id="hbaseDaoTemplate" class="org.springframework.data.hadoop.hbase.HbaseTemplate"/>-->
+
+    <!--dao-->
+    <hbase:bean id="hbaseDaoImpl" class="com.example.dao.HBaseDaoImpl">
+        <hbase:constructor-arg ref="hbaseConfiguration"/>
+    </hbase:bean>
+    <!--自定义-->
+    <!--config-->
+    <!--<beans:bean id="hBaseKerberos" class="com.example.utils.kerberos.HBaseKerberos"/>-->
+    <!--<beans:bean id="taskExecutor"-->
+    <!--ThreadPool-->
+    <!--class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor" p:corePoolSize="3"-->
+    <!--p:keepAliveSeconds="200" p:maxPoolSize="5" p:queueCapacity="25"/>-->
+
+    <!--HBase任务调度-->
+    <!--配置作业类-->
+    <hbase:bean id="job" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <hbase:property name="targetObject">
+            <hbase:bean class="com.example.service.JobServiceImpl"/>
+        </hbase:property>
+        <hbase:property name="targetMethod" value="doJobs"/>
+        <hbase:property name="concurrent" value="false"/>
+        <!-- 作业不并发调度 -->
+    </hbase:bean>
+    <!--配置作业调度的触发方式-->
+    <hbase:bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+        <hbase:property name="jobDetail" ref="job"/>
+        <hbase:property name="startDelay" value="0"/><!-- 调度工厂实例化后，经过0秒开始执行调度 -->
+        <hbase:property name="repeatInterval" value="2000"/><!-- 每2秒调度一次 -->
+    </hbase:bean>
+
+    <!--配置调度工厂-->
+    <hbase:bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <hbase:property name="triggers">
+            <hbase:list>
+                <hbase:ref bean="simpleTrigger"/>
+            </hbase:list>
+        </hbase:property>
+    </hbase:bean>
+
+</hbase:beans>

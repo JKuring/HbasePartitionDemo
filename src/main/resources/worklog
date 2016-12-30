@@ -1,0 +1,21 @@
+-ea
+-Dproject.path=src\main\resources\conf\hbase\auth\
+-Dhadoop.home.dir=F:\download\hadoop
+-Dzookeeper.sasl.clientconfig=client
+-Dzookeeper.server.principal=zookeeper/hadoop.hadoop_b.com
+
+
+业务对象：
+HBaseEntityImpl HBase 表对象
+JobEntityImpl 任务对象，需加载对应的操作表
+
+业务分层：
+HBaseServiceImpl HBase 服务类 编写 partition 部分，各个操作的路径 确定其业务
+JobServiceImpl 任务执行类 编写完成 未测试
+TaskServiceImpl 任务存储类
+
+xdr_data:ps_gn_http_event_D_2016120400
+xdr_data:ps_gn_http_event_D_2016120500
+xdr_data:ps_gn_http_event_D_2016120600
+xdr_data:ps_gn_http_event_D_2016120700
+xdr_data:ps_gn_http_event_D_2016120800

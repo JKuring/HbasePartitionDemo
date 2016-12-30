@@ -5,6 +5,9 @@ package com.example.interfaces.service;
  */
 public interface JobService extends BaseService<String> {
 
-    public void doJobs();
+    /**
+     * 同时执行所有job
+     */
+    public void doPartitionTableJobs();
 
 }

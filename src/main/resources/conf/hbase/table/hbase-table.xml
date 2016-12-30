@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<hbase:beans xmlns:hbase="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+    <hbase:bean id="xdr_data: ps_gn_http_event" class="com.example.data.entity.HBaseEntityImpl">
+        <hbase:constructor-arg name="tableName" value="xdr_data: ps_gn_http_event"/>
+        <hbase:constructor-arg name="dataPath" value=""/>
+        <hbase:constructor-arg name="propertiesMap">
+            <hbase:map key-type="java.lang.String" value-type="java.lang.String">
+                <hbase:entry key="importtsv_columns" value="HBASE_ROW_KEY,cf"/>
+                <!--HFILE_TMP_DIR="/tmp/hbload/${CV_TABLE_NAME}/${DAY}${HOUR}${MINUTE}"-->
+                <hbase:entry key="importtsv_bulk_output" value="/tmp/hbload"/>
+                <hbase:entry key="importtsv_mapper_class" value="com.example.service.mapreduce.TsvImporterPutMapper"/>
+                <hbase:entry key="mapreduce_map_memory_mb" value="2048"/>
+                <hbase:entry key="hbase_client_retries_number" value="10"/>
+                <hbase:entry key="importtsv_rowkey_indexs" value=""/>
+                <hbase:entry key="importtsv_rowkey_strategies" value=""/>
+                <hbase:entry key="importtsv_rowkey_encrypts" value=""/>
+                <hbase:entry key="importtsv.separator" value="\|"/>
+            </hbase:map>
+        </hbase:constructor-arg>
+    </hbase:bean>
+
+    <hbase:bean id="xdr_data: ps_gn_http_event" class="com.example.data.entity.JobEntityImpl">
+        <hbase:constructor-arg name="jobName" value="xdr_data: ps_gn_http_event"/>
+        <hbase:constructor-arg name="tableEntity" ref="xdr_data: ps_gn_http_event"/>
+    </hbase:bean>
+
+</hbase:beans>

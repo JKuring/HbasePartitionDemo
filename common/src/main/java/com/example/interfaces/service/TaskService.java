@@ -7,8 +7,8 @@ import java.util.Map;
 /**
  * Created by linghang.kong on 2016/12/29.
  */
-public interface TaskService<T,E> extends BaseService<String>{
-    public void putTask(T jobEntity);
-    public JobEntity getTask(E tableName);
-    Map<E, T> getTasksMap();
+public interface TaskService extends BaseService<String>{
+    public void putTask(JobEntity jobEntity);
+    public JobEntity getTask(String tableNamTe);
+    Map<String, JobEntity<com.example.interfaces.dto.HBaseEntity>> getTasksMap();
 }

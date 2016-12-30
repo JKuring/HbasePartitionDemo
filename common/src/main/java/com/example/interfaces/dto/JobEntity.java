@@ -5,6 +5,10 @@ package com.example.interfaces.dto;
  */
 public interface JobEntity<T> extends BaseEntity {
 
+    public void setId(String id);
+
+    public String getId();
+
     public long getCreateTime();
 
     public void setCreateTime(long createTime);
@@ -20,4 +24,16 @@ public interface JobEntity<T> extends BaseEntity {
     public T getTableEntity();
 
     public void setTableEntity(T tableEntity);
+
+    public long getStopTime();
+
+    public void setStopTime(long stopTime);
+
+    public long getJobStartTime();
+
+    public void setJobStartTime(long jobStartTime);
+
+    public long getJobEndTime();
+
+    public void setJobEndTime(long jobEndTime);
 }

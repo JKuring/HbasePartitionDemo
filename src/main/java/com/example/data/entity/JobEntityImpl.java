@@ -34,7 +34,6 @@ public class JobEntityImpl implements JobEntity<HBaseEntity> {
     }
 
 
-
     public HBaseEntity getTableEntity() {
         return tableEntity;
     }
@@ -52,13 +51,13 @@ public class JobEntityImpl implements JobEntity<HBaseEntity> {
     }
 
     @Override
-    public void setId(String id) {
-        this.id = id;
+    public String getId() {
+        return this.id;
     }
 
     @Override
-    public String getId() {
-        return this.id;
+    public void setId(String id) {
+        this.id = id;
     }
 
     public long getCreateTime() {
@@ -102,11 +101,11 @@ public class JobEntityImpl implements JobEntity<HBaseEntity> {
     }
 
     public String getName() {
-        return null;
+        return this.jobName;
     }
 
     public void setName(String name) {
-
+        this.jobName = name;
     }
 
     public boolean isStatus() {

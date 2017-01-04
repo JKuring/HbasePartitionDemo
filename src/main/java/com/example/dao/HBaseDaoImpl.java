@@ -3,6 +3,7 @@ package com.example.dao;
 
 import com.example.interfaces.dao.HBaseDao;
 import com.example.interfaces.dto.HBaseEntity;
+import com.example.utils.HBaseUtils;
 import com.example.utils.kerberos.HBaseKerberos;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
@@ -11,18 +12,17 @@ import org.apache.hadoop.hbase.TableName;
 import org.apache.hadoop.hbase.client.Admin;
 import org.apache.hadoop.hbase.client.Connection;
 import org.apache.hadoop.hbase.client.ConnectionFactory;
+import org.apache.hadoop.hbase.io.compress.Compression;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.Executors;
 
 import static java.lang.String.format;
 
@@ -31,25 +31,23 @@ import static java.lang.String.format;
  */
 public class HBaseDaoImpl implements HBaseDao<HBaseEntity> {
 
-    private static final Logger logger = LoggerFactory.getLogger(HBaseDaoImpl.class);
-
-    private  static final int CONNECTION_POOL_SIZE = 10;
-
     public static final String ROWKEY_COLUMN_SPEC = "HBASE_ROW_KEY";
     public static final String TIMESTAMPKEY_COLUMN_SPEC = "HBASE_TS_KEY";
     public static final String ATTRIBUTES_COLUMN_SPEC = "HBASE_ATTRIBUTES_KEY";
     public static final String CELL_VISIBILITY_COLUMN_SPEC = "HBASE_CELL_VISIBILITY";
     public static final String CELL_TTL_COLUMN_SPEC = "HBASE_CELL_TTL";
-
-    @Autowired
-    @Qualifier("coprocessor")
-    Object coprocessor;
-    @Autowired
-    @Qualifier("splitPolicy")
-    Object splitPolicy;
+    private static final Logger logger = LoggerFactory.getLogger(HBaseDaoImpl.class);
+    private static final int CONNECTION_POOL_SIZE = 10;
+//    @Autowired
+//    @Qualifier("coprocessor")
+//    Object coprocessor;
+//    @Autowired
+//    @Qualifier("splitPolicy")
+//    Object splitPolicy;
 
     private Configuration configuration;
     private Connection connection;
+    private Admin admin;
 
     /**
      * The connection factory create a connection that is pool of multi threads in the Dao constructor.
@@ -66,46 +64,56 @@ public class HBaseDaoImpl implements HBaseDao<HBaseEntity> {
             logger.info("successful Fetch configuration!");
             // add kerberos
             this.configuration = HBaseKerberos.getConfiguration(this.configuration);
-//            // spring template handle, add configuration.
+            // spring template handle, add configuration.
 //            setConfiguration(this.configuration);
 //            afterPropertiesSet();
         }
+    }
+
+    private Admin createAdmin(){
         try {
-            this.connection = ConnectionFactory.createConnection(this.configuration, Executors.newFixedThreadPool(CONNECTION_POOL_SIZE));
-//            this.connection = ConnectionFactory.createConnection(this.configuration, Executors.newFixedThreadPool(10));
-        } catch (IOException e) {
-            logger.debug("hbase.client.connection.impl={}",this.configuration.get("hbase.client.connection.impl"));
-            logger.error("get connection false! Exception: {}.",e.getMessage());
+            if (this.connection == null || this.connection.isClosed()) {
+                this.connection = ConnectionFactory.createConnection(this.configuration);
+                // multi connections
+//            this.connection = ConnectionFactory.createConnection(this.configuration, Executors.newFixedThreadPool(CONNECTION_POOL_SIZE));
+                this.admin = this.connection.getAdmin();
+            }
+            return this.admin;
+        } catch (Exception e) {
+            logger.debug("hbase.client.connection.impl={}", this.configuration.get("hbase.client.connection.impl"));
+            logger.error("get connection false! Exception: {}.", e.getMessage());
             StringBuffer out = new StringBuffer();
             StackTraceElement[] trace = e.getStackTrace();
-            out.append(" processResult: "+e.toString());
+            out.append(" processResult: " + e.toString());
             for (StackTraceElement s : trace) {
                 out.append("\tat " + s.toString() + "\r\n");
             }
             logger.debug(out.toString());
-            System.exit(1);
+//            System.exit(1);
         }
-    }
-
-    private Admin createAdmin() throws IOException {
-        return this.connection.getAdmin();
+        return null;
     }
 
     public void createTable(TableName tableName, String[] columns) throws IOException {
-        createTable(tableName, columns, this.coprocessor, this.splitPolicy);
+        createTable(tableName, columns,null,null,null);
     }
 
-    public void createTable(TableName tableName, String[] columns, Object coprocessor, Object splitPolicy) throws IOException {
-        createTable(tableName, columns, coprocessor.getClass().getName(), splitPolicy.getClass().getName());
+    public void createTable(TableName tableName, String[] columns, Object coprocessor, Object splitPolicy,File file) throws IOException {
+        createTable(tableName, columns,1,0,"none",coprocessor.getClass().getName(), splitPolicy.getClass().getName(),file);
     }
 
 
-    public void createTable(TableName tableName, String[] columns, String coprocessor, String splitPolicy) throws IOException {
+    public void createTable(TableName tableName, String[] columns, int version, int ttl, String compressionType,
+                            String coprocessor, String splitPolicy, File spiltKeysFile) throws IOException {
         Admin admin = createAdmin();
         HTableDescriptor hTableDescriptor = new HTableDescriptor(tableName);
+        hTableDescriptor.setCompactionEnabled(true);
         Set<String> cfSet = getColumnFamilies(columns);
         for (String cf : cfSet) {
             HColumnDescriptor hcd = new HColumnDescriptor(Bytes.toBytes(cf));
+            hcd.setMinVersions(version);
+            hcd.setTimeToLive(ttl);
+            hcd.setCompactionCompressionType(Compression.getCompressionAlgorithmByName(compressionType));
             hTableDescriptor.addFamily(hcd);
         }
         // coprocessor
@@ -115,9 +123,22 @@ public class HBaseDaoImpl implements HBaseDao<HBaseEntity> {
         if (splitPolicy.length() > 0)
             hTableDescriptor.setRegionSplitPolicyClassName(splitPolicy);
 
-        logger.warn(format("Creating table '{}' with '{}' columns and default descriptors.",
+        logger.debug(format("Creating table '{}' with '{}' columns and default descriptors.",
                 tableName, cfSet));
-        admin.createTable(hTableDescriptor);
+        if (spiltKeysFile.exists()) {
+            // add a split_keys file
+            admin.createTable(hTableDescriptor, HBaseUtils.getSplitKeys(spiltKeysFile));
+        } else {
+            admin.createTable(hTableDescriptor);
+            admin.close();
+        }
+    }
+
+    public void deleteTable(TableName tableName) throws IOException {
+        Admin admin = createAdmin();
+        admin.disableTable(tableName);
+        admin.deleteTable(tableName);
+        logger.debug("delete the {} table.",tableName.getNameAsString());
     }
 
     private Set<String> getColumnFamilies(String[] columns) {
@@ -173,4 +194,11 @@ public class HBaseDaoImpl implements HBaseDao<HBaseEntity> {
         return this.connection.getAdmin().listTableNames();
     }
 
+    public Configuration getConfiguration() {
+        return configuration;
+    }
+
+    public void setConfiguration(Configuration configuration) {
+        this.configuration = configuration;
+    }
 }

@@ -1,16 +1,23 @@
 package com.example.utils;
 
 import com.example.utils.kerberos.HBaseKerberos;
+import com.example.utils.time.TimeTransform;
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.client.HConnection;
 import org.apache.hadoop.hbase.client.HConnectionManager;
 import org.apache.hadoop.hbase.mapreduce.ImportTsv;
-import org.apache.hadoop.util.ToolRunner;
+import org.apache.hadoop.hbase.util.Bytes;
+import org.apache.hadoop.mapreduce.Job;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by linghang.kong on 2016/12/26.
@@ -19,16 +26,139 @@ public class HBaseUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(HBaseUtils.class);
 
-    public static boolean uploadData(String tableName, String loadingPath) throws Exception {
+    public static boolean uploadData(Configuration configuration, String tableName, String loadingPath) throws Exception {
         boolean result = false;
         logger.info("Upload data to {}, the load path is {}.", tableName, loadingPath);
-//        int status = ToolRunner.run(new ImportTsv(), new String[]{tableName, loadPath});
-        int status = ToolRunner.run(new ImportTsv(), new String[]{tableName, loadingPath});
+//        configuration.set("importtsv.bulk.output","/tmp/hbload");
+        logger.debug("importtsv.columns: {}.", configuration.get("importtsv.columns"));
+        logger.debug("importtsv.bulk.output: {}.", configuration.get("importtsv.bulk.output"));
+//        configuration.set("create.table","yes");
 
-        if (status == 0) {
-            result = true;
+        Job job = ImportTsv.createSubmittableJob(configuration, new String[]{tableName, loadingPath});
+//        int status = ToolRunner.run(new ImportTsv(), new String[]{tableName, loadingPath});
+        return job.waitForCompletion(true) ? true : false;
+//
+//        ImportTsv importTsv = new ImportTsv();
+//        importTsv.setConf(configuration);
+//        String[] otherArgs = (new GenericOptionsParser(importTsv.getConf(), new String[]{tableName, loadingPath})).getRemainingArgs();
+//        if(otherArgs.length < 2) {
+//            logger.error("Wrong number of arguments: " + otherArgs.length);
+//            return result;
+//        } else {
+//            if (null == importTsv.getConf().get("importtsv.mapper.class")) {
+//                String[] timstamp = importTsv.getConf().getStrings("importtsv.columns");
+//                if (timstamp == null) {
+//                    logger.error("No columns specified. Please specify with -Dimporttsv.columns=...");
+//                    return result;
+//                }
+//
+//                int rowkeysFound = 0;
+//                String[] job = timstamp;
+//                int attrKeysFound = timstamp.length;
+//
+//                int arr$;
+//                for (arr$ = 0; arr$ < attrKeysFound; ++arr$) {
+//                    String len$ = job[arr$];
+//                    if (len$.equals("HBASE_ROW_KEY")) {
+//                        ++rowkeysFound;
+//                    }
+//                }
+//
+//                if (rowkeysFound != 1) {
+//                    logger.error("Must specify exactly one column as HBASE_ROW_KEY");
+//                    return result;
+//                }
+//
+//                int var12 = 0;
+//                String[] var14 = timstamp;
+//                arr$ = timstamp.length;
+//
+//                int var16;
+//                for (var16 = 0; var16 < arr$; ++var16) {
+//                    String i$ = var14[var16];
+//                    if (i$.equals("HBASE_TS_KEY")) {
+//                        ++var12;
+//                    }
+//                }
+//
+//                if (var12 > 1) {
+//                    logger.error("Must specify at most one column as HBASE_TS_KEY");
+//                    return result;
+//                }
+//
+//                attrKeysFound = 0;
+//                String[] var15 = timstamp;
+//                var16 = timstamp.length;
+//
+//                for (int var17 = 0; var17 < var16; ++var17) {
+//                    String col = var15[var17];
+//                    if (col.equals("HBASE_ATTRIBUTES_KEY")) {
+//                        ++attrKeysFound;
+//                    }
+//                }
+//
+//                if (attrKeysFound > 1) {
+//                    logger.error("Must specify at most one column as HBASE_ATTRIBUTES_KEY");
+//                    return result;
+//                }
+//
+//                if (timstamp.length - (rowkeysFound + var12 + attrKeysFound) < 1) {
+//                    logger.error("One or more columns in addition to the row key and timestamp(optional) are required");
+//                    return result;
+//                }
+//            }
+//
+//            long var11 = importTsv.getConf().getLong("importtsv.timestamp", System.currentTimeMillis());
+//            importTsv.getConf().setLong("importtsv.timestamp", var11);
+//            Job var13 = ImportTsv.createSubmittableJob(importTsv.getConf(), otherArgs);
+//            return var13.waitForCompletion(true) ? true : false;
+//        }
+    }
+
+    public static byte[][] getSplitKeys(File file) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(file));
+        String tmp = null;
+        List<byte[]> buffer = new ArrayList<>();
+        while ((tmp = reader.readLine()) != null) {
+            buffer.add(Bytes.toBytes(tmp));
         }
-        return result;
+        return buffer.toArray(new byte[buffer.size()][]);
+    }
+
+    public static String getCurrentTimeTableName(String tableName,long currentTime, int delay, String granularity){
+        String[] date = String.valueOf(TimeTransform.getDate(currentTime - delay * 60 * 1000)).split("\\-");
+        String year = date[0];
+        String mouth = date[1];
+        String day = date[2];
+        String[] time = date[3].split(":");
+        String minute;
+        int mm = Integer.parseInt(time[1]);
+        mm = mm - mm % 5;
+        if (mm < 10) {
+            minute = "0" + mm;
+        } else
+            minute = String.valueOf(mm);
+
+        if (granularity.equals("D")) {
+            tableName = tableName + "_D_" + year + mouth + day + "00";
+        }
+        return tableName;
+    }
+
+    public static String getCurrentTimePath(long currentTime, int delay){
+        String[] date = String.valueOf(TimeTransform.getDate(currentTime - delay * 60 * 1000)).split("\\-");
+        String year = date[0];
+        String mouth = date[1];
+        String day = date[2];
+        String[] time = date[3].split(":");
+        String minute;
+        int mm = Integer.parseInt(time[1]);
+        mm = mm - mm % 5;
+        if (mm < 10) {
+            minute = "0" + mm;
+        } else
+            minute = String.valueOf(mm);
+        return "/" + year + mouth + day + "/" + time[0] + "/" + minute;
     }
 
     public static HConnection getConnection() {
@@ -44,7 +174,7 @@ public class HBaseUtils {
         }
         try {
             connection = HConnectionManager.createConnection(configuration);
-//            this.connection = ConnectionFactory.createConnection(this.configuration, Executors.newFixedThreadPool(10));
+//            importTsv.connection = ConnectionFactory.createConnection(importTsv.configuration, Executors.newFixedThreadPool(10));
         } catch (IOException e) {
             logger.debug("hbase.client.connection.impl={}", configuration.get("hbase.client.connection.impl"));
             logger.error("get connection false! Exception: {}.", e.getMessage());

@@ -13,14 +13,14 @@ import java.util.Map;
  * Created by linghang.kong on 2016/12/29.
  */
 @Component
-class TaskServiceImpl implements TaskService{
+class TaskServiceImpl implements TaskService {
 
-    private Map<String,JobEntity<HBaseEntity>> tasksMap;
+    private Map<String, JobEntity<HBaseEntity>> tasksMap;
     private boolean start_optition = true;
     private boolean stop_optition = true;
 
     public TaskServiceImpl() {
-        this.tasksMap = new HashMap<>();
+        this.tasksMap = new HashMap<String, JobEntity<HBaseEntity>>();
     }
 
     @Override
@@ -54,7 +54,7 @@ class TaskServiceImpl implements TaskService{
     }
 
     public void putTask(JobEntity jobEntity) {
-        this.tasksMap.put(jobEntity.getName(),jobEntity);
+        this.tasksMap.put(jobEntity.getName(), jobEntity);
     }
 
     public JobEntity getTask(String tableName) {

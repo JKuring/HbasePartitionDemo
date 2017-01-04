@@ -1,5 +1,6 @@
 package com.example.interfaces.service;
 
+import com.example.interfaces.dto.HBaseEntity;
 import com.example.interfaces.dto.JobEntity;
 
 import java.util.Map;
@@ -10,5 +11,5 @@ import java.util.Map;
 public interface TaskService extends BaseService<String>{
     public void putTask(JobEntity jobEntity);
     public JobEntity getTask(String tableNamTe);
-    Map<String, JobEntity<com.example.interfaces.dto.HBaseEntity>> getTasksMap();
+    Map<String, JobEntity<HBaseEntity>> getTasksMap();
 }

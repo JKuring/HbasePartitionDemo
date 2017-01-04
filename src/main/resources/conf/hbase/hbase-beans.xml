@@ -16,11 +16,6 @@
     <hdp:configuration resources="classpath:conf/hbase/hbase-site.xml"/>
     <hdp:hbase-configuration configuration-ref="hadoopConfiguration"/>
 
-
-    <hbase:bean id="coprocessor" class="org.apache.hadoop.hbase.coprocessor.AggregateImplementation"/>
-    <hbase:bean id="splitPolicy" class="org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy"/>
-    <!--<hbase:bean id="hbaseDaoTemplate" class="org.springframework.data.hadoop.hbase.HbaseTemplate"/>-->
-
     <!--dao-->
     <hbase:bean id="hbaseDaoImpl" class="com.example.dao.HBaseDaoImpl">
         <hbase:constructor-arg ref="hbaseConfiguration"/>
@@ -30,40 +25,40 @@
     <!--<beans:bean id="hBaseKerberos" class="com.example.utils.kerberos.HBaseKerberos"/>-->
     <!--<beans:bean id="taskExecutor"-->
 
-    <!--ThreadPool-->
-    <hbase:bean id ="taskExecutor"
-          class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor" >
-        <hbase:property name ="corePoolSize" value ="5" />
-        <hbase:property name ="keepAliveSeconds" value ="300" />
-        <hbase:property name ="maxPoolSize" value ="10" />
-        <hbase:property name ="queueCapacity" value ="30" />
-    </hbase:bean>
+    <!--&lt;!&ndash;ThreadPool&ndash;&gt;-->
+    <!--<hbase:bean id ="taskExecutor"-->
+          <!--class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor" >-->
+        <!--<hbase:property name ="corePoolSize" value ="1"/>-->
+        <!--<hbase:property name ="keepAliveSeconds" value ="300" />-->
+        <!--<hbase:property name ="maxPoolSize" value ="10" />-->
+        <!--<hbase:property name ="queueCapacity" value ="30" />-->
+    <!--</hbase:bean>-->
 
 
-    <!--HBase任务调度-->
-    <!--配置作业类-->
-    <hbase:bean id="job" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
-        <hbase:property name="targetObject">
-            <hbase:bean class="com.example.service.JobServiceImpl"/>
-        </hbase:property>
-        <hbase:property name="targetMethod" value="doPartitionTableJobs"/>
-        <hbase:property name="concurrent" value="false"/>
-        <!-- 作业不并发调度 -->
-    </hbase:bean>
-    <!--配置作业调度的触发方式-->
-    <hbase:bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
-        <hbase:property name="jobDetail" ref="job"/>
-        <hbase:property name="startDelay" value="900000"/><!-- 调度工厂实例化后，经过0秒开始执行调度 -->
-        <hbase:property name="repeatInterval" value="300000"/><!-- 每2秒调度一次 -->
-    </hbase:bean>
+    <!--&lt;!&ndash;HBase任务调度&ndash;&gt;-->
+    <!--&lt;!&ndash;配置作业类&ndash;&gt;-->
+    <!--<hbase:bean id="job" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">-->
+        <!--<hbase:property name="targetObject">-->
+            <!--<hbase:bean class="com.example.service.JobServiceImpl"/>-->
+        <!--</hbase:property>-->
+        <!--<hbase:property name="targetMethod" value="doPartitionTableJobs"/>-->
+        <!--<hbase:property name="concurrent" value="false"/>-->
+        <!--&lt;!&ndash; 作业不并发调度 &ndash;&gt;-->
+    <!--</hbase:bean>-->
+    <!--&lt;!&ndash;配置作业调度的触发方式&ndash;&gt;-->
+    <!--<hbase:bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">-->
+        <!--<hbase:property name="jobDetail" ref="job"/>-->
+        <!--<hbase:property name="startDelay" value="10000"/>&lt;!&ndash; 调度工厂实例化后，经过0秒开始执行调度 900000&ndash;&gt;-->
+        <!--<hbase:property name="repeatInterval" value="300000"/>&lt;!&ndash; 每2秒调度一次 &ndash;&gt;-->
+    <!--</hbase:bean>-->
 
-    <!--配置调度工厂-->
-    <hbase:bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
-        <hbase:property name="triggers">
-            <hbase:list>
-                <hbase:ref bean="simpleTrigger"/>
-            </hbase:list>
-        </hbase:property>
-    </hbase:bean>
+    <!--&lt;!&ndash;配置调度工厂&ndash;&gt;-->
+    <!--<hbase:bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">-->
+        <!--<hbase:property name="triggers">-->
+            <!--<hbase:list>-->
+                <!--<hbase:ref bean="simpleTrigger"/>-->
+            <!--</hbase:list>-->
+        <!--</hbase:property>-->
+    <!--</hbase:bean>-->
 
 </hbase:beans>

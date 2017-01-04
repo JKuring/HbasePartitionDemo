@@ -21,77 +21,86 @@ public class JobServiceImpl implements JobService {
     private static final Logger logger = LoggerFactory.getLogger(JobServiceImpl.class);
 
     @Autowired
+//    @Qualifier("taskServiceImpl")
     private TaskService taskService;
 
     @Autowired
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @Autowired
-    private HBaseService<JobEntity,HBaseEntity> hbaseService;
+    private HBaseService<JobEntity, HBaseEntity> hbaseService;
 
-    private Map<String, JobEntity<HBaseEntity>> tasksMap = taskService.getTasksMap();
+    private Map<String, JobEntity<HBaseEntity>> tasksMap;
 
     private String name;
 
+    // admin 权限，在不知道任何job的情况下，进行启动，无需认证。
     public void doPartitionTableJobs() {
+        logger.info("Start all tasks.");
+        tasksMap = taskService.getTasksMap();
         long currentTime = System.currentTimeMillis();
-        if (tasksMap.size()>0){
-            for (String name: tasksMap.keySet()
-                 ) {
-                final JobEntity job= tasksMap.get(name);
+        if (tasksMap.size() > 0) {
+            for (String name : tasksMap.keySet()
+                    ) {
+                logger.debug("Task name: {}.", name);
+                final JobEntity job = tasksMap.get(name);
+                final HBaseEntity hBaseEntity = (HBaseEntity) job.getTableEntity();
                 if (!job.isStatus()) {
-                    final HBaseEntity hBaseEntity = (HBaseEntity) job.getTableEntity();
                     // 开启任务
-                    job.setId(job.getName()+"-"+currentTime);
+                    job.setId(job.getName() + "-" + currentTime);
                     job.setStatus(true);
                     job.setCreateTime(currentTime);
                     this.name = name;
-                    final JobServiceImpl jobService = this;
-                    threadPoolTaskExecutor.execute(new Runnable() {
-                        @Override
-                        public void run() {
-                            job.setStartTime(System.currentTimeMillis());
-                            hbaseService.partition(hBaseEntity);
-                            //关闭任务
-                            job.setStatus(false);
-                            job.setStopTime(System.currentTimeMillis());
-                        }
-                    });
                     logger.info("create the {} job.", name);
-                }else {
-                    logger.info("The table of {} is executing!",name);
+                } else {
+                    logger.info("The table of {} is executing!", name);
                 }
+                threadPoolTaskExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        job.setStartTime(System.currentTimeMillis());
+                        hbaseService.partition(hBaseEntity);
+                        //关闭任务
+                        job.setStatus(false);
+                        job.setStopTime(System.currentTimeMillis());
+                    }
+                });
             }
-        }else{
+        } else {
             logger.info("Noting to do for this task list, because the list is empty.");
         }
     }
 
     /**
-     *  excute job
+     * excute job
+     *
      * @param tableName table name
      * @return 0:successful 1:exits 2: can't find the table
      */
-    public int doPartitionTableJob(String tableName){
-        for (String name:tasksMap.keySet()
-             ) {
-            if (tableName.equals(name)){
+    public int doPartitionTableJob(String tableName) {
+        for (String name : tasksMap.keySet()
+                ) {
+            if (tableName.equals(name)) {
                 JobEntity job = tasksMap.get(tableName);
                 if (!job.isStatus()) {
                     hbaseService.partition(tasksMap.get(tableName).getTableEntity());
                     logger.info("create the {} job.", tableName);
                     return 0;
-                }else {
-                    logger.info("The table of {} is executing!",tableName);
+                } else {
+                    logger.info("The table of {} is executing!", tableName);
                     return 1;
                 }
             }
         }
-        logger.info("Can't find the table of {}!",tableName);
+        logger.info("Can't find the table of {}!", tableName);
         return 2;
     }
 
-    public void stopJobs(){
+    public void doCreateTableJob(){
+
+    }
+
+    public void stopJobs() {
 
     }
 

@@ -5,8 +5,10 @@ import java.util.List;
 
 /**
  * Created by linghang.kong on 2016/12/20.
+ * add the option of field level
  */
 public interface BaseDao<T> {
+
     // 根据ID加载实体
     T get(Class<T> entityClazz, Serializable id);
 

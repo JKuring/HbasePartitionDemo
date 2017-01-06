@@ -5,7 +5,9 @@ package com.example.interfaces.service;
  */
 public interface HBaseService<T,E> extends BaseService<String> {
 
-    public void createTable(E hBaseEntity) ;
+    public void createTable(E hBaseEntity);
+
+    public void delete(E hBaseEntity);
 
     public boolean createSchedulerJob(T jobEntity);
 

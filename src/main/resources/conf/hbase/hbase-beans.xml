@@ -13,7 +13,21 @@
     <hbase:import resource="classpath:conf/hbase/table/hbase-table.xml"/>
 
 
-    <hdp:configuration resources="classpath:conf/hbase/hbase-site.xml"/>
+    <hdp:configuration resources="classpath:conf/hbase/conf/hbase-site.xml"/>
+    <!--classpath:conf/hbase/conf/hbase-policy.xml,-->
+    <!--classpath:conf/hbase/conf/hide-config.xml,-->
+    <!--classpath:conf/hbase/conf/core-site.xml,-->
+    <!--classpath:conf/hbase/conf/hdfs-site.xml,-->
+    <!--classpath:conf/hbase/conf/mapred-site.xml,-->
+    <!--classpath:conf/hbase/conf/yarn-site.xml-->
+    <!--"/>-->
+    <!--<hdp:configuration resources="classpath:conf/hbase/cdh/hbase-site.xml,-->
+    <!--classpath:conf/hbase/cdh/core-site.xml,-->
+    <!--classpath:conf/hbase/cdh/hdfs-site.xml,-->
+    <!--classpath:conf/hbase/cdh/mapred-site.xml,-->
+    <!--classpath:conf/hbase/cdh/yarn-site.xml-->
+    <!--"/>-->
+
     <hdp:hbase-configuration configuration-ref="hadoopConfiguration"/>
 
     <!--dao-->
@@ -22,43 +36,90 @@
     </hbase:bean>
     <!--自定义-->
     <!--config-->
-    <!--<beans:bean id="hBaseKerberos" class="com.example.utils.kerberos.HBaseKerberos"/>-->
-    <!--<beans:bean id="taskExecutor"-->
 
     <!--&lt;!&ndash;ThreadPool&ndash;&gt;-->
-    <!--<hbase:bean id ="taskExecutor"-->
-          <!--class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor" >-->
-        <!--<hbase:property name ="corePoolSize" value ="1"/>-->
-        <!--<hbase:property name ="keepAliveSeconds" value ="300" />-->
-        <!--<hbase:property name ="maxPoolSize" value ="10" />-->
-        <!--<hbase:property name ="queueCapacity" value ="30" />-->
+    <!--<hbase:bean id="taskExecutor"-->
+    <!--class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">-->
+    <!--<hbase:property name="corePoolSize" value="3"/>-->
+    <!--<hbase:property name="keepAliveSeconds" value="300"/>-->
+    <!--<hbase:property name="maxPoolSize" value="10"/>-->
+    <!--<hbase:property name="queueCapacity" value="30"/>-->
     <!--</hbase:bean>-->
-
-
+    <!---->
     <!--&lt;!&ndash;HBase任务调度&ndash;&gt;-->
+    <!--&lt;!&ndash;建表任务&ndash;&gt;-->
     <!--&lt;!&ndash;配置作业类&ndash;&gt;-->
-    <!--<hbase:bean id="job" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">-->
-        <!--<hbase:property name="targetObject">-->
-            <!--<hbase:bean class="com.example.service.JobServiceImpl"/>-->
-        <!--</hbase:property>-->
-        <!--<hbase:property name="targetMethod" value="doPartitionTableJobs"/>-->
-        <!--<hbase:property name="concurrent" value="false"/>-->
-        <!--&lt;!&ndash; 作业不并发调度 &ndash;&gt;-->
+    <!--<hbase:bean id="Create_Job" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">-->
+    <!--<hbase:property name="targetObject">-->
+    <!--<hbase:bean class="com.example.service.JobServiceImpl"/>-->
+    <!--</hbase:property>-->
+    <!--<hbase:property name="targetMethod" value="doCreateTableJobs"/>-->
+    <!--<hbase:property name="concurrent" value="false"/>-->
+    <!--&lt;!&ndash; 作业不并发调度 &ndash;&gt;-->
     <!--</hbase:bean>-->
     <!--&lt;!&ndash;配置作业调度的触发方式&ndash;&gt;-->
-    <!--<hbase:bean id="simpleTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">-->
-        <!--<hbase:property name="jobDetail" ref="job"/>-->
-        <!--<hbase:property name="startDelay" value="10000"/>&lt;!&ndash; 调度工厂实例化后，经过0秒开始执行调度 900000&ndash;&gt;-->
-        <!--<hbase:property name="repeatInterval" value="300000"/>&lt;!&ndash; 每2秒调度一次 &ndash;&gt;-->
+    <!--<hbase:bean id="Create_Job_Trigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
+    <!--<hbase:property name="jobDetail" ref="Create_Job"/>-->
+    <!--<hbase:property name="startDelay" value="10000"/>&lt;!&ndash; 调度工厂实例化后，经过0秒开始执行调度 900000&ndash;&gt;-->
+    <!--<hbase:property name="cronExpression" value="0 0 5 0 * ?"/>&lt;!&ndash; 每2秒调度一次 &ndash;&gt;-->
     <!--</hbase:bean>-->
-
     <!--&lt;!&ndash;配置调度工厂&ndash;&gt;-->
     <!--<hbase:bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">-->
-        <!--<hbase:property name="triggers">-->
-            <!--<hbase:list>-->
-                <!--<hbase:ref bean="simpleTrigger"/>-->
-            <!--</hbase:list>-->
-        <!--</hbase:property>-->
+    <!--<hbase:property name="triggers">-->
+    <!--<hbase:list>-->
+    <!--<hbase:ref bean="Create_Job_Trigger"/>-->
+    <!--</hbase:list>-->
+    <!--</hbase:property>-->
+    <!--</hbase:bean>-->
+
+    <!--&lt;!&ndash;入库任务&ndash;&gt;-->
+    <!--&lt;!&ndash;配置作业类&ndash;&gt;-->
+    <!--<hbase:bean id="Load_Job" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">-->
+    <!--<hbase:property name="targetObject">-->
+    <!--<hbase:bean class="com.example.service.JobServiceImpl"/>-->
+    <!--</hbase:property>-->
+    <!--<hbase:property name="targetMethod" value="doPartitionTableJobs"/>-->
+    <!--<hbase:property name="concurrent" value="false"/>-->
+    <!--&lt;!&ndash; 作业不并发调度 &ndash;&gt;-->
+    <!--</hbase:bean>-->
+    <!--&lt;!&ndash;配置作业调度的触发方式&ndash;&gt;-->
+    <!--<hbase:bean id="Load_Job_Trigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">-->
+    <!--<hbase:property name="jobDetail" ref="Load_Job"/>-->
+    <!--<hbase:property name="startDelay" value="60000"/>&lt;!&ndash; 调度工厂实例化后，经过0秒开始执行调度 900000&ndash;&gt;-->
+    <!--<hbase:property name="repeatInterval" value="300000"/>&lt;!&ndash; 每2秒调度一次 &ndash;&gt;-->
+    <!--</hbase:bean>-->
+    <!--&lt;!&ndash;配置调度工厂&ndash;&gt;-->
+    <!--<hbase:bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">-->
+    <!--<hbase:property name="triggers">-->
+    <!--<hbase:list>-->
+    <!--<hbase:ref bean="Load_Job_Trigger"/>-->
+    <!--</hbase:list>-->
+    <!--</hbase:property>-->
+    <!--</hbase:bean>-->
+
+    <!--&lt;!&ndash;删表任务&ndash;&gt;-->
+    <!--&lt;!&ndash;配置作业类&ndash;&gt;-->
+    <!--<hbase:bean id="Delete_Job" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">-->
+    <!--<hbase:property name="targetObject">-->
+    <!--<hbase:bean class="com.example.service.JobServiceImpl"/>-->
+    <!--</hbase:property>-->
+    <!--<hbase:property name="targetMethod" value="doDeleteTableJobs"/>-->
+    <!--<hbase:property name="concurrent" value="false"/>-->
+    <!--&lt;!&ndash; 作业不并发调度 &ndash;&gt;-->
+    <!--</hbase:bean>-->
+    <!--&lt;!&ndash;配置作业调度的触发方式&ndash;&gt;-->
+    <!--<hbase:bean id="Delete_Job_Trigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">-->
+    <!--<hbase:property name="jobDetail" ref="Delete_Job"/>-->
+    <!--<hbase:property name="startDelay" value="30000"/>&lt;!&ndash; 调度工厂实例化后，经过0秒开始执行调度 900000&ndash;&gt;-->
+    <!--<hbase:property name="cronExpression" value="0 0 4 1/4 * ?"/>&lt;!&ndash; 每2秒调度一次 &ndash;&gt;-->
+    <!--</hbase:bean>-->
+    <!--&lt;!&ndash;配置调度工厂&ndash;&gt;-->
+    <!--<hbase:bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">-->
+    <!--<hbase:property name="triggers">-->
+    <!--<hbase:list>-->
+    <!--<hbase:ref bean="Delete_Job_Trigger"/>-->
+    <!--</hbase:list>-->
+    <!--</hbase:property>-->
     <!--</hbase:bean>-->
 
 </hbase:beans>

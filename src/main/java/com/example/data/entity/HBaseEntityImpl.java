@@ -28,7 +28,6 @@ public class HBaseEntityImpl implements HBaseEntity {
 
     private String tableName;
     private String dataPath;
-    //    private String loadDate;
     private String granularity;
     private int delay;
 
@@ -39,6 +38,8 @@ public class HBaseEntityImpl implements HBaseEntity {
     private String splitPolicy;
     private File spiltKeysFile;
     private String coprocessor;
+
+    private boolean currentIsCreated = false;
 
 
     private Map<String, String> propertiesMap = new HashMap<String, String>();
@@ -171,5 +172,13 @@ public class HBaseEntityImpl implements HBaseEntity {
                 ) {
             configuration.set(key, propertiesMap.get(key));
         }
+    }
+
+    public boolean isCurrentIsCreated() {
+        return currentIsCreated;
+    }
+
+    public void setCurrentIsCreated(boolean currentIsCreated) {
+        this.currentIsCreated = currentIsCreated;
     }
 }

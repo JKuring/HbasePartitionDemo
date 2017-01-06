@@ -27,6 +27,8 @@ public class HBaseServiceImpl implements HBaseService<JobEntity, HBaseEntity> {
 
     private final String HADOOP_USER_ROOT = "/DOMAIN_B/WANGGUAN/XINGNENG/MANAGE";
 
+    private final long addition = 24*60*60*1000;
+
 
     @Autowired
     HBaseDaoImpl hBaseDao;
@@ -46,12 +48,19 @@ public class HBaseServiceImpl implements HBaseService<JobEntity, HBaseEntity> {
 
     public void createTable(HBaseEntity hBaseEntity) {
         try {
+            if (hBaseEntity.isCurrentIsCreated()){
+                this.hBaseDao.createTable(TableName.valueOf(HBaseUtils.getCurrentTimeTableName(hBaseEntity.getName(),
+                        System.currentTimeMillis(), 0, hBaseEntity.getGranularity())), hBaseEntity.getColumns(),
+                        hBaseEntity.getVersion(), hBaseEntity.getTtl(), hBaseEntity.getCompressionType(),
+                        hBaseEntity.getCoprocessor(), hBaseEntity.getSplitPolicy(), hBaseEntity.getSpiltKeysFile());
+                hBaseEntity.setCurrentIsCreated(true);
+            }
             this.hBaseDao.createTable(TableName.valueOf(HBaseUtils.getCurrentTimeTableName(hBaseEntity.getName(),
-                    System.currentTimeMillis(), 0, hBaseEntity.getGranularity())), hBaseEntity.getColumns(),
+                    System.currentTimeMillis()+addition, 0, hBaseEntity.getGranularity())), hBaseEntity.getColumns(),
                     hBaseEntity.getVersion(), hBaseEntity.getTtl(), hBaseEntity.getCompressionType(),
                     hBaseEntity.getCoprocessor(), hBaseEntity.getSplitPolicy(), hBaseEntity.getSpiltKeysFile());
         } catch (IOException e) {
-            logger.error("Failed to create table, Exception: {}", e.getMessage());
+            logger.error("Failed to create table, Exception: {}.", e.getMessage());
         }
     }
 

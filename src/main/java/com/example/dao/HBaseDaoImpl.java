@@ -106,39 +106,47 @@ public class HBaseDaoImpl implements HBaseDao<HBaseEntity> {
     public void createTable(TableName tableName, String[] columns, int version, int ttl, String compressionType,
                             String coprocessor, String splitPolicy, File spiltKeysFile) throws IOException {
         Admin admin = createAdmin();
-        HTableDescriptor hTableDescriptor = new HTableDescriptor(tableName);
-        hTableDescriptor.setCompactionEnabled(true);
-        Set<String> cfSet = getColumnFamilies(columns);
-        for (String cf : cfSet) {
-            HColumnDescriptor hcd = new HColumnDescriptor(Bytes.toBytes(cf));
-            hcd.setMinVersions(version);
-            hcd.setTimeToLive(ttl);
-            hcd.setCompactionCompressionType(Compression.getCompressionAlgorithmByName(compressionType));
-            hTableDescriptor.addFamily(hcd);
-        }
-        // coprocessor
-        if (coprocessor.length() > 0)
-            hTableDescriptor.addCoprocessor(coprocessor);
-        // split policy
-        if (splitPolicy.length() > 0)
-            hTableDescriptor.setRegionSplitPolicyClassName(splitPolicy);
+        if (!admin.tableExists(tableName)) {
+            HTableDescriptor hTableDescriptor = new HTableDescriptor(tableName);
+            hTableDescriptor.setCompactionEnabled(true);
+            Set<String> cfSet = getColumnFamilies(columns);
+            for (String cf : cfSet) {
+                HColumnDescriptor hcd = new HColumnDescriptor(Bytes.toBytes(cf));
+                hcd.setMinVersions(version);
+                hcd.setTimeToLive(ttl);
+                hcd.setCompactionCompressionType(Compression.getCompressionAlgorithmByName(compressionType));
+                hTableDescriptor.addFamily(hcd);
+            }
+            // coprocessor
+            if (coprocessor.length() > 0)
+                hTableDescriptor.addCoprocessor(coprocessor);
+            // split policy
+            if (splitPolicy.length() > 0)
+                hTableDescriptor.setRegionSplitPolicyClassName(splitPolicy);
 
-        logger.debug(format("Creating table '{}' with '{}' columns and default descriptors.",
-                tableName, cfSet));
-        if (spiltKeysFile.exists()) {
-            // add a split_keys file
-            admin.createTable(hTableDescriptor, HBaseUtils.getSplitKeys(spiltKeysFile));
-        } else {
-            admin.createTable(hTableDescriptor);
-            admin.close();
+            logger.debug(format("Creating table '{}' with '{}' columns and default descriptors.",
+                    tableName.getNameAsString(), cfSet.toArray()));
+            if (spiltKeysFile.exists()) {
+                // add a split_keys file
+                admin.createTable(hTableDescriptor, HBaseUtils.getSplitKeys(spiltKeysFile));
+            } else {
+                admin.createTable(hTableDescriptor);
+                admin.close();
+            }
+        }else {
+            logger.warn("the {} table is existence.", tableName.getNameAsString());
         }
     }
 
     public void deleteTable(TableName tableName) throws IOException {
         Admin admin = createAdmin();
-        admin.disableTable(tableName);
-        admin.deleteTable(tableName);
-        logger.debug("delete the {} table.",tableName.getNameAsString());
+        if (admin.tableExists(tableName)) {
+            admin.disableTable(tableName);
+            admin.deleteTable(tableName);
+            logger.debug("delete the {} table.", tableName.getNameAsString());
+        }else {
+            logger.warn("the {} table is not existence.", tableName.getNameAsString());
+        }
     }
 
     private Set<String> getColumnFamilies(String[] columns) {
@@ -186,6 +194,7 @@ public class HBaseDaoImpl implements HBaseDao<HBaseEntity> {
 
     public void close() throws IOException {
         // close the connection, not a thread.
+        // 一般默认会关闭
         this.connection.close();
         logger.debug("close connection!");
     }

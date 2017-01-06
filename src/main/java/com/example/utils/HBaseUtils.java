@@ -3,7 +3,6 @@ package com.example.utils;
 import com.example.utils.kerberos.HBaseKerberos;
 import com.example.utils.time.TimeTransform;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.client.HConnection;
 import org.apache.hadoop.hbase.client.HConnectionManager;
 import org.apache.hadoop.hbase.mapreduce.ImportTsv;
@@ -27,16 +26,12 @@ public class HBaseUtils {
     private static final Logger logger = LoggerFactory.getLogger(HBaseUtils.class);
 
     public static boolean uploadData(Configuration configuration, String tableName, String loadingPath) throws Exception {
-        boolean result = false;
         logger.info("Upload data to {}, the load path is {}.", tableName, loadingPath);
-//        configuration.set("importtsv.bulk.output","/tmp/hbload");
         logger.debug("importtsv.columns: {}.", configuration.get("importtsv.columns"));
         logger.debug("importtsv.bulk.output: {}.", configuration.get("importtsv.bulk.output"));
-//        configuration.set("create.table","yes");
-
         Job job = ImportTsv.createSubmittableJob(configuration, new String[]{tableName, loadingPath});
 //        int status = ToolRunner.run(new ImportTsv(), new String[]{tableName, loadingPath});
-        return job.waitForCompletion(true) ? true : false;
+        return job.waitForCompletion(true);
 //
 //        ImportTsv importTsv = new ImportTsv();
 //        importTsv.setConf(configuration);
@@ -126,7 +121,7 @@ public class HBaseUtils {
     }
 
     public static String getCurrentTimeTableName(String tableName,long currentTime, int delay, String granularity){
-        String[] date = String.valueOf(TimeTransform.getDate(currentTime - delay * 60 * 1000)).split("\\-");
+        String[] date = String.valueOf(TimeTransform.getDate(currentTime - delay)).split("\\-");
         String year = date[0];
         String mouth = date[1];
         String day = date[2];
@@ -161,8 +156,8 @@ public class HBaseUtils {
         return "/" + year + mouth + day + "/" + time[0] + "/" + minute;
     }
 
-    public static HConnection getConnection() {
-        Configuration configuration = HBaseConfiguration.create();
+    public static HConnection getConnection(Configuration configuration) {
+//        Configuration configuration = HBaseConfiguration.create();
         HConnection connection = null;
         if (configuration == null) {
             logger.error("configuration is null!");

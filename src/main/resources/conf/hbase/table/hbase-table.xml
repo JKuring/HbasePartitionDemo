@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <hbase:beans xmlns:hbase="http://www.springframework.org/schema/beans"
-       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!--入库-->
     <hbase:bean id="xdr_data:ps_gn_http_event_K" class="com.example.data.entity.HBaseEntityImpl" scope="prototype">
         <hbase:constructor-arg name="tableName" value="xdr_data:ps_gn_http_event_K"/>
         <hbase:constructor-arg name="dataPath" value="/rawdata/xdr/gn/gn_http"/>
         <hbase:constructor-arg name="granularity" value="D"/>
-        <hbase:constructor-arg name="delay" value="15"/>
+        <hbase:constructor-arg name="delay" value="900000"/>
         <hbase:constructor-arg name="propertiesMap">
             <hbase:map key-type="java.lang.String" value-type="java.lang.String">
                 <hbase:entry key="importtsv.columns" value="HBASE_ROW_KEY,cf"/>
@@ -25,21 +25,21 @@
                 <hbase:entry key="create.table" value="yes"/>
             </hbase:map>
         </hbase:constructor-arg>
+        <!-- table constructor-->
         <hbase:property name="columns" value="cf"/>
         <hbase:property name="version" value="1"/>
         <hbase:property name="compressionType" value="snappy"/>
-        <hbase:property name="ttl" value="2592000"/>
+        <hbase:property name="ttl" value="10000"/>
         <hbase:property name="splitPolicy" value="org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy"/>
         <hbase:property name="spiltKeysFile" value="classpath:conf/hbase/table/splits.txt"/>
         <hbase:property name="coprocessor" value="org.apache.hadoop.hbase.coprocessor.AggregateImplementation"/>
     </hbase:bean>
-
+    <!--2592000-->
     <!--可以不入库-->
     <hbase:bean id="xdr_data:ps_gn_http_event_job" class="com.example.data.entity.JobEntityImpl">
         <hbase:constructor-arg name="jobName" value="xdr_data:ps_gn_http_event_job"/>
         <hbase:constructor-arg name="tableEntity" ref="xdr_data:ps_gn_http_event_K"/>
     </hbase:bean>
-
 
 
 </hbase:beans>

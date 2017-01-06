@@ -13,6 +13,54 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  */
 public class HBaseServiceImplTest {
     @Test
+    public void getName1() throws Exception {
+
+    }
+
+    @Test
+    public void setName1() throws Exception {
+
+    }
+
+    @Test
+    public void createTable1() throws Exception {
+
+    }
+
+    @Test
+    public void delete() throws Exception {
+        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:beans.xml");
+        HBaseServiceImpl hbaseServiceImpl = context.getBean("HBaseServiceImpl", HBaseServiceImpl.class);
+        HBaseEntity hBaseEntity = context.getBean("xdr_data:ps_gn_http_event_K", HBaseEntityImpl.class);
+//        JobEntity jobEntity = context.getBean("xdr_data:ps_gn_http_event_D", JobEntityImpl.class);
+//        hbaseServiceImpl.createSchedulerJob(jobEntity);
+//        hbaseServiceImpl.createTable(hBaseEntity);
+//        logger.info("current time: {}.",System.currentTimeMillis());
+        hbaseServiceImpl.delete(hBaseEntity);
+                Thread.sleep(3*60*1000);
+    }
+
+    @Test
+    public void getTableNames1() throws Exception {
+
+    }
+
+    @Test
+    public void partition1() throws Exception {
+
+    }
+
+    @Test
+    public void createSchedulerJob2() throws Exception {
+
+    }
+
+    @Test
+    public void close1() throws Exception {
+
+    }
+
+    @Test
     public void getName() throws Exception {
 
     }
@@ -26,13 +74,12 @@ public class HBaseServiceImplTest {
     public void createTable() throws Exception {
         ApplicationContext context = new ClassPathXmlApplicationContext("classpath:beans.xml");
         HBaseServiceImpl hbaseServiceImpl = context.getBean("HBaseServiceImpl", HBaseServiceImpl.class);
-        HBaseEntity hBaseEntity = context.getBean("xdr_data:ps_gn_http_event", HBaseEntityImpl.class);
+        HBaseEntity hBaseEntity = context.getBean("xdr_data:ps_gn_http_event_K", HBaseEntityImpl.class);
 //        JobEntity jobEntity = context.getBean("xdr_data:ps_gn_http_event_D", JobEntityImpl.class);
 //        hbaseServiceImpl.createSchedulerJob(jobEntity);
         hbaseServiceImpl.createTable(hBaseEntity);
         logger.info("current time: {}.",System.currentTimeMillis());
-        Thread.sleep(5*60*1000);
-        hbaseServiceImpl.delete(hBaseEntity);
+        Thread.sleep(3*60*1000);
 
     }
 
@@ -43,7 +90,14 @@ public class HBaseServiceImplTest {
 
     @Test
     public void partition() throws Exception {
-
+        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:beans.xml");
+        HBaseServiceImpl hbaseServiceImpl = context.getBean("HBaseServiceImpl", HBaseServiceImpl.class);
+        HBaseEntity hBaseEntity = context.getBean("xdr_data:ps_gn_http_event_K", HBaseEntityImpl.class);
+//        JobEntity jobEntity = context.getBean("xdr_data:ps_gn_http_event_D", JobEntityImpl.class);
+//        hbaseServiceImpl.createSchedulerJob(jobEntity);
+        hbaseServiceImpl.partition(hBaseEntity);
+        logger.info("current time: {}.",System.currentTimeMillis());
+        Thread.sleep(3*60*1000);
     }
 
     @Test

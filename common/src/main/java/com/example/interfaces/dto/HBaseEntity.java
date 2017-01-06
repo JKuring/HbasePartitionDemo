@@ -57,4 +57,8 @@ public interface HBaseEntity extends BaseEntity {
 
     public void addSystemProperties(Configuration configuration);
 
+    public boolean isCurrentIsCreated();
+
+    public void setCurrentIsCreated(boolean currentIsCreated);
+
 }

@@ -23,7 +23,7 @@ public class HBaseKerberos {
             String confHomePath = System.getProperty("project.path");
             String separator = System.getProperty("file.separator");
             String confDirPath = System.getProperty("user.dir") + separator + confHomePath;
-            logger.debug(confDirPath);
+            logger.info(confDirPath);
             // set zookeeper server pricipal
 //            System.setProperty("zookeeper.sasl.clientconfig", "client");
 //            System.setProperty("zookeeper.server.principal", "zookeeper/hadoop.hadoop_b.com");

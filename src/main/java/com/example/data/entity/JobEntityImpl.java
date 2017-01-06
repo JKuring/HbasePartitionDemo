@@ -38,7 +38,7 @@ public class JobEntityImpl implements JobEntity<HBaseEntity> {
         return tableEntity;
     }
 
-    public void setTableEntity(HBaseEntity tableEntity) {
+    public synchronized void setTableEntity(HBaseEntity tableEntity) {
         this.tableEntity = tableEntity;
     }
 
@@ -46,7 +46,7 @@ public class JobEntityImpl implements JobEntity<HBaseEntity> {
         return interval;
     }
 
-    public void setInterval(long interval) {
+    public synchronized void setInterval(long interval) {
         this.interval = interval;
     }
 
@@ -56,7 +56,7 @@ public class JobEntityImpl implements JobEntity<HBaseEntity> {
     }
 
     @Override
-    public void setId(String id) {
+    public synchronized void setId(String id) {
         this.id = id;
     }
 
@@ -64,23 +64,23 @@ public class JobEntityImpl implements JobEntity<HBaseEntity> {
         return 0;
     }
 
-    public void setCreateTime(long createTime) {
+    public synchronized void setCreateTime(long createTime) {
 
     }
 
     public long getStartTime() {
-        return 0;
+        return this.startTime;
     }
 
-    public void setStartTime(long createTime) {
-
+    public synchronized void setStartTime(long startTime) {
+        this.startTime = startTime;
     }
 
     public long getStopTime() {
         return stopTime;
     }
 
-    public void setStopTime(long stopTime) {
+    public synchronized void setStopTime(long stopTime) {
         this.stopTime = stopTime;
     }
 
@@ -88,7 +88,7 @@ public class JobEntityImpl implements JobEntity<HBaseEntity> {
         return jobStartTime;
     }
 
-    public void setJobStartTime(long jobStartTime) {
+    public synchronized void setJobStartTime(long jobStartTime) {
         this.jobStartTime = jobStartTime;
     }
 
@@ -96,7 +96,7 @@ public class JobEntityImpl implements JobEntity<HBaseEntity> {
         return jobEndTime;
     }
 
-    public void setJobEndTime(long jobEndTime) {
+    public synchronized void setJobEndTime(long jobEndTime) {
         this.jobEndTime = jobEndTime;
     }
 
@@ -104,7 +104,7 @@ public class JobEntityImpl implements JobEntity<HBaseEntity> {
         return this.jobName;
     }
 
-    public void setName(String name) {
+    public synchronized void setName(String name) {
         this.jobName = name;
     }
 
@@ -112,7 +112,7 @@ public class JobEntityImpl implements JobEntity<HBaseEntity> {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public synchronized void setStatus(boolean status) {
         this.status = status;
     }
 }

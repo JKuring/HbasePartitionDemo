@@ -35,8 +35,34 @@ public class JobServiceImpl implements JobService {
     private String name;
 
     // admin 权限，在不知道任何job的情况下，进行启动，无需认证。
+
+    public void doCreateTableJobs(){
+        logger.info("Start all tasks of the created tables.");
+        tasksMap = taskService.getTasksMap();
+        if (tasksMap.size() > 0) {
+            for (String name : tasksMap.keySet()
+                    ) {
+                logger.debug("Task name: {}.", name);
+                final JobEntity job = tasksMap.get(name);
+                final HBaseEntity hBaseEntity = (HBaseEntity) job.getTableEntity();
+                // 开启任务
+                job.setJobStartTime(System.currentTimeMillis());
+                threadPoolTaskExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        hbaseService.createTable(hBaseEntity);
+                        //关闭任务
+                        job.setJobEndTime(System.currentTimeMillis());
+                    }
+                });
+            }
+        } else {
+            logger.info("Noting to do for this task list, because the list is empty.");
+        }
+    }
+
     public void doPartitionTableJobs() {
-        logger.info("Start all tasks.");
+        logger.info("Start all tasks of the partition tables.");
         tasksMap = taskService.getTasksMap();
         long currentTime = System.currentTimeMillis();
         if (tasksMap.size() > 0) {
@@ -45,16 +71,20 @@ public class JobServiceImpl implements JobService {
                 logger.debug("Task name: {}.", name);
                 final JobEntity job = tasksMap.get(name);
                 final HBaseEntity hBaseEntity = (HBaseEntity) job.getTableEntity();
+                // 判断上一个任务是否执行完成
+                // 由于没有job依赖，status并不能准确反映最后一次任务的情况，但不影响使用。
+                // 可以确定的是，如果出现if情况，可能有其他任务在执行；有else中的情况就一定有某个任务没有完成。
                 if (!job.isStatus()) {
-                    // 开启任务
                     job.setId(job.getName() + "-" + currentTime);
-                    job.setStatus(true);
-                    job.setCreateTime(currentTime);
-                    this.name = name;
-                    logger.info("create the {} job.", name);
+                    logger.info("Create the {} job.", job.getId());
                 } else {
-                    logger.info("The table of {} is executing!", name);
+                    logger.info("The last job of the {} table is executing! The last job id is {}.", name,job.getId());
+                    job.setId(job.getName() + "-" + currentTime);
+                    logger.info("Create the {} job again.", job.getId());
                 }
+                // 开启任务
+                job.setStatus(true);
+                job.setCreateTime(currentTime);
                 threadPoolTaskExecutor.execute(new Runnable() {
                     @Override
                     public void run() {
@@ -96,8 +126,25 @@ public class JobServiceImpl implements JobService {
         return 2;
     }
 
-    public void doCreateTableJob(){
-
+    public void doDeleteTableJobs(){
+        logger.info("Start all tasks of the created tables.");
+        tasksMap = taskService.getTasksMap();
+        if (tasksMap.size() > 0) {
+            for (String name : tasksMap.keySet()
+                    ) {
+                logger.debug("Task name: {}.", name);
+                final JobEntity job = tasksMap.get(name);
+                final HBaseEntity hBaseEntity = (HBaseEntity) job.getTableEntity();
+                threadPoolTaskExecutor.execute(new Runnable() {
+                    @Override
+                    public void run() {
+                        hbaseService.delete(hBaseEntity);
+                    }
+                });
+            }
+        } else {
+            logger.info("Noting to do for this task list, because the list is empty.");
+        }
     }
 
     public void stopJobs() {

@@ -15,7 +15,7 @@ public interface JobEntity<T> extends BaseEntity {
 
     public long getStartTime();
 
-    public void setStartTime(long createTime);
+    public void setStartTime(long startTime);
 
     public boolean isStatus();
 

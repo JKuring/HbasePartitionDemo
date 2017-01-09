@@ -2,10 +2,14 @@ package com.example.data.entity;
 
 import com.example.interfaces.dto.HBaseEntity;
 import com.example.interfaces.dto.JobEntity;
+import org.apache.hadoop.conf.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by linghang.kong on 2016/12/27.
@@ -26,6 +30,11 @@ public class JobEntityImpl implements JobEntity<HBaseEntity> {
     private long interval;
     private boolean status = false;
 
+    private String dataPath;
+    private String granularity;
+    private int delay;
+    private Map<String, String> propertiesMap = new HashMap<String, String>();
+
     private HBaseEntity tableEntity;
 
     public JobEntityImpl(String jobName, HBaseEntity tableEntity) {
@@ -42,20 +51,10 @@ public class JobEntityImpl implements JobEntity<HBaseEntity> {
         this.tableEntity = tableEntity;
     }
 
-    public long getInterval() {
-        return interval;
-    }
-
-    public synchronized void setInterval(long interval) {
-        this.interval = interval;
-    }
-
-    @Override
     public String getId() {
         return this.id;
     }
 
-    @Override
     public synchronized void setId(String id) {
         this.id = id;
     }
@@ -100,6 +99,62 @@ public class JobEntityImpl implements JobEntity<HBaseEntity> {
         this.jobEndTime = jobEndTime;
     }
 
+    public String getJobName() {
+        return jobName;
+    }
+
+    public void setJobName(String jobName) {
+        this.jobName = jobName;
+    }
+
+    public long getInterval() {
+        return interval;
+    }
+
+    public void setInterval(long interval) {
+        this.interval = interval;
+    }
+
+    @Override
+    public String getDataPath() {
+        return dataPath;
+    }
+
+    @Override
+    public void setDataPath(String dataPath) {
+        this.dataPath = dataPath;
+    }
+
+    @Override
+    public String getGranularity() {
+        return granularity;
+    }
+
+    @Override
+    public void setGranularity(String granularity) {
+        this.granularity = granularity;
+    }
+
+    @Override
+    public int getDelay() {
+        return delay;
+    }
+
+    @Override
+    public void setDelay(int delay) {
+        this.delay = delay;
+    }
+
+    @Override
+    public Map<String, String> getPropertiesMap() {
+        return propertiesMap;
+    }
+
+    @Override
+    public void setPropertiesMap(Map<String, String> propertiesMap) {
+        this.propertiesMap = propertiesMap;
+    }
+
     public String getName() {
         return this.jobName;
     }
@@ -114,5 +169,14 @@ public class JobEntityImpl implements JobEntity<HBaseEntity> {
 
     public synchronized void setStatus(boolean status) {
         this.status = status;
+    }
+
+
+
+    public void addSystemProperties(Configuration configuration) {
+        for (String key : propertiesMap.keySet()
+                ) {
+            configuration.set(key, propertiesMap.get(key));
+        }
     }
 }

@@ -1,27 +1,11 @@
 package com.example.interfaces.dto;
 
-import org.apache.hadoop.conf.Configuration;
-
 import java.io.File;
-import java.util.Map;
 
 /**
  * Created by linghang.kong on 2016/12/22.
  */
 public interface HBaseEntity extends BaseEntity {
-
-
-    public String getDataPath();
-
-    public void setDataPath(String dataPath);
-
-    public String getGranularity();
-
-    public void setGranularity(String granularity);
-
-    public int getDelay();
-
-    public void setDelay(int delay);
 
     public String[] getColumns();
 
@@ -50,12 +34,6 @@ public interface HBaseEntity extends BaseEntity {
     public String getCoprocessor();
 
     public void setCoprocessor(String coprocessor);
-
-    public Map<String, String> getPropertiesMap();
-
-    public void setPropertiesMap(Map<String, String> propertiesMap);
-
-    public void addSystemProperties(Configuration configuration);
 
     public boolean isCurrentIsCreated();
 

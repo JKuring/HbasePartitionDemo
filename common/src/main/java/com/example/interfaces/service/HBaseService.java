@@ -3,14 +3,14 @@ package com.example.interfaces.service;
 /**
  * Created by linghang.kong on 2016/12/23.
  */
-public interface HBaseService<T,E> extends BaseService<String> {
+public interface HBaseService<T> extends BaseService<String> {
 
-    public void createTable(E hBaseEntity);
+    public void createTable(T hBaseEntity);
 
-    public void delete(E hBaseEntity);
+    public void delete(T hBaseEntity);
 
     public boolean createSchedulerJob(T jobEntity);
 
-    public boolean partition(E hBaseEntity);
+    public boolean partition(T hBaseEntity);
 
 }

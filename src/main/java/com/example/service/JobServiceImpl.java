@@ -28,7 +28,7 @@ public class JobServiceImpl implements JobService {
     private ThreadPoolTaskExecutor threadPoolTaskExecutor;
 
     @Autowired
-    private HBaseService<JobEntity, HBaseEntity> hbaseService;
+    private HBaseService<JobEntity> hbaseService;
 
     private Map<String, JobEntity<HBaseEntity>> tasksMap;
 
@@ -44,13 +44,12 @@ public class JobServiceImpl implements JobService {
                     ) {
                 logger.debug("Task name: {}.", name);
                 final JobEntity job = tasksMap.get(name);
-                final HBaseEntity hBaseEntity = (HBaseEntity) job.getTableEntity();
                 // 开启任务
                 job.setJobStartTime(System.currentTimeMillis());
                 threadPoolTaskExecutor.execute(new Runnable() {
                     @Override
                     public void run() {
-                        hbaseService.createTable(hBaseEntity);
+                        hbaseService.createTable(job);
                         //关闭任务
                         job.setJobEndTime(System.currentTimeMillis());
                     }
@@ -70,7 +69,6 @@ public class JobServiceImpl implements JobService {
                     ) {
                 logger.debug("Task name: {}.", name);
                 final JobEntity job = tasksMap.get(name);
-                final HBaseEntity hBaseEntity = (HBaseEntity) job.getTableEntity();
                 // 判断上一个任务是否执行完成
                 // 由于没有job依赖，status并不能准确反映最后一次任务的情况，但不影响使用。
                 // 可以确定的是，如果出现if情况，可能有其他任务在执行；有else中的情况就一定有某个任务没有完成。
@@ -89,7 +87,7 @@ public class JobServiceImpl implements JobService {
                     @Override
                     public void run() {
                         job.setStartTime(System.currentTimeMillis());
-                        hbaseService.partition(hBaseEntity);
+                        hbaseService.partition(job);
                         //关闭任务
                         job.setStatus(false);
                         job.setStopTime(System.currentTimeMillis());
@@ -113,7 +111,7 @@ public class JobServiceImpl implements JobService {
             if (tableName.equals(name)) {
                 JobEntity job = tasksMap.get(tableName);
                 if (!job.isStatus()) {
-                    hbaseService.partition(tasksMap.get(tableName).getTableEntity());
+                    hbaseService.partition(job);
                     logger.info("create the {} job.", tableName);
                     return 0;
                 } else {
@@ -134,11 +132,10 @@ public class JobServiceImpl implements JobService {
                     ) {
                 logger.debug("Task name: {}.", name);
                 final JobEntity job = tasksMap.get(name);
-                final HBaseEntity hBaseEntity = (HBaseEntity) job.getTableEntity();
                 threadPoolTaskExecutor.execute(new Runnable() {
                     @Override
                     public void run() {
-                        hbaseService.delete(hBaseEntity);
+                        hbaseService.delete(job);
                     }
                 });
             }

@@ -1,5 +1,9 @@
 package com.example.interfaces.dto;
 
+import org.apache.hadoop.conf.Configuration;
+
+import java.util.Map;
+
 /**
  * Created by linghang.kong on 2016/12/27.
  */
@@ -36,4 +40,22 @@ public interface JobEntity<T> extends BaseEntity {
     public long getJobEndTime();
 
     public void setJobEndTime(long jobEndTime);
+
+    public String getDataPath();
+
+    public void setDataPath(String dataPath);
+
+    public String getGranularity();
+
+    public void setGranularity(String granularity);
+
+    public int getDelay();
+
+    public void setDelay(int delay);
+
+    public Map<String, String> getPropertiesMap();
+
+    public void setPropertiesMap(Map<String, String> propertiesMap);
+
+    public void addSystemProperties(Configuration configuration);
 }

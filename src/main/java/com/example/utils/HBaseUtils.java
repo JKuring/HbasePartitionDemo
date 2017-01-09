@@ -32,7 +32,7 @@ public class HBaseUtils {
         Job job = ImportTsv.createSubmittableJob(configuration, new String[]{tableName, loadingPath});
 //        int status = ToolRunner.run(new ImportTsv(), new String[]{tableName, loadingPath});
         return job.waitForCompletion(true);
-//
+        // 对输出参数的校验
 //        ImportTsv importTsv = new ImportTsv();
 //        importTsv.setConf(configuration);
 //        String[] otherArgs = (new GenericOptionsParser(importTsv.getConf(), new String[]{tableName, loadingPath})).getRemainingArgs();

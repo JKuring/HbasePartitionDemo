@@ -21,7 +21,7 @@ import java.util.Map;
  * Created by linghang.kong on 2016/12/23.
  */
 @Service
-public class HBaseServiceImpl implements HBaseService<JobEntity, HBaseEntity> {
+public class HBaseServiceImpl implements HBaseService<JobEntity> {
 
     private static final Logger logger = LoggerFactory.getLogger(HBaseServiceImpl.class);
 
@@ -46,27 +46,29 @@ public class HBaseServiceImpl implements HBaseService<JobEntity, HBaseEntity> {
 
     }
 
-    public void createTable(HBaseEntity hBaseEntity) {
+    public  void createTable(JobEntity jobEntity) {
         try {
-            if (hBaseEntity.isCurrentIsCreated()){
+            HBaseEntity hBaseEntity = (HBaseEntity) jobEntity.getTableEntity();
+            if (!hBaseEntity.isCurrentIsCreated()){
                 this.hBaseDao.createTable(TableName.valueOf(HBaseUtils.getCurrentTimeTableName(hBaseEntity.getName(),
-                        System.currentTimeMillis(), 0, hBaseEntity.getGranularity())), hBaseEntity.getColumns(),
+                        System.currentTimeMillis(), 0, jobEntity.getGranularity())), hBaseEntity.getColumns(),
                         hBaseEntity.getVersion(), hBaseEntity.getTtl(), hBaseEntity.getCompressionType(),
                         hBaseEntity.getCoprocessor(), hBaseEntity.getSplitPolicy(), hBaseEntity.getSpiltKeysFile());
                 hBaseEntity.setCurrentIsCreated(true);
             }
-            this.hBaseDao.createTable(TableName.valueOf(HBaseUtils.getCurrentTimeTableName(hBaseEntity.getName(),
-                    System.currentTimeMillis()+addition, 0, hBaseEntity.getGranularity())), hBaseEntity.getColumns(),
-                    hBaseEntity.getVersion(), hBaseEntity.getTtl(), hBaseEntity.getCompressionType(),
-                    hBaseEntity.getCoprocessor(), hBaseEntity.getSplitPolicy(), hBaseEntity.getSpiltKeysFile());
+//            this.hBaseDao.createTable(TableName.valueOf(HBaseUtils.getCurrentTimeTableName(hBaseEntity.getName(),
+//                    System.currentTimeMillis()+addition, 0, jobEntity.getGranularity())), hBaseEntity.getColumns(),
+//                    hBaseEntity.getVersion(), hBaseEntity.getTtl(), hBaseEntity.getCompressionType(),
+//                    hBaseEntity.getCoprocessor(), hBaseEntity.getSplitPolicy(), hBaseEntity.getSpiltKeysFile());
         } catch (IOException e) {
             logger.error("Failed to create table, Exception: {}.", e.getMessage());
         }
     }
 
-    public void delete(HBaseEntity hBaseEntity){
+    public void delete(JobEntity jobEntity){
+        HBaseEntity hBaseEntity = (HBaseEntity) jobEntity.getTableEntity();
         try{
-            String tableName = HBaseUtils.getCurrentTimeTableName(hBaseEntity.getName(),System.currentTimeMillis()-hBaseEntity.getTtl()*1000,0,hBaseEntity.getGranularity());
+            String tableName = HBaseUtils.getCurrentTimeTableName(hBaseEntity.getName(),System.currentTimeMillis()-hBaseEntity.getTtl()*1000,0,jobEntity.getGranularity());
             this.hBaseDao.deleteTable(TableName.valueOf(tableName));
         }catch (Exception e){
             logger.error("Failed to delete the {} table, exception: {}.",hBaseEntity.getName(),e.getMessage());
@@ -84,20 +86,21 @@ public class HBaseServiceImpl implements HBaseService<JobEntity, HBaseEntity> {
         return null;
     }
 
-    public boolean partition(HBaseEntity hBaseEntity) {
+    public boolean partition(JobEntity jobEntity) {
         boolean result = false;
+        HBaseEntity hBaseEntity = (HBaseEntity) jobEntity.getTableEntity();
         String name = hBaseEntity.getName();
-        Map tableParametters = hBaseEntity.getPropertiesMap();
+        Map tableParametters = jobEntity.getPropertiesMap();
         long currentTime = System.currentTimeMillis();
 
-        String currentTimeTableName = HBaseUtils.getCurrentTimeTableName(name,currentTime,hBaseEntity.getDelay(),hBaseEntity.getGranularity());
+        String currentTimeTableName = HBaseUtils.getCurrentTimeTableName(name,currentTime,jobEntity.getDelay(),jobEntity.getGranularity());
         String[] tmpTableName = name.split(":");
-        String tmpPath = HBaseUtils.getCurrentTimePath(currentTime,hBaseEntity.getDelay());
-        String dataPath = HADOOP_USER_ROOT + hBaseEntity.getDataPath() + tmpPath;
+        String tmpPath = HBaseUtils.getCurrentTimePath(currentTime,jobEntity.getDelay());
+        String dataPath = HADOOP_USER_ROOT + jobEntity.getDataPath() + tmpPath;
         tableParametters.put("importtsv.bulk.output", tableParametters.get("importtsv.bulk.output1") + "/" + tmpTableName[0] + "_" + tmpTableName[1] + tmpPath);
 
         //加载为系统参数
-        hBaseEntity.addSystemProperties(hBaseDao.getConfiguration());
+        jobEntity.addSystemProperties(hBaseDao.getConfiguration());
         try {
             if (!HBaseUtils.uploadData(hBaseDao.getConfiguration(), currentTimeTableName, dataPath)) {
                 logger.warn("Upload data failing! Please clean dirty data, and try again later.");

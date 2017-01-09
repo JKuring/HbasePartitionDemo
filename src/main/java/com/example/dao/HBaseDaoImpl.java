@@ -23,8 +23,7 @@ import java.io.Serializable;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
-import static java.lang.String.format;
+import java.util.concurrent.Executors;
 
 /**
  * Created by linghang.kong on 2016/12/21.
@@ -47,7 +46,6 @@ public class HBaseDaoImpl implements HBaseDao<HBaseEntity> {
 
     private Configuration configuration;
     private Connection connection;
-    private Admin admin;
 
     /**
      * The connection factory create a connection that is pool of multi threads in the Dao constructor.
@@ -70,15 +68,15 @@ public class HBaseDaoImpl implements HBaseDao<HBaseEntity> {
         }
     }
 
-    private Admin createAdmin(){
+    private synchronized Admin createAdmin(){
         try {
             if (this.connection == null || this.connection.isClosed()) {
-                this.connection = ConnectionFactory.createConnection(this.configuration);
+//                this.connection = ConnectionFactory.createConnection(this.configuration);
                 // multi connections
-//            this.connection = ConnectionFactory.createConnection(this.configuration, Executors.newFixedThreadPool(CONNECTION_POOL_SIZE));
-                this.admin = this.connection.getAdmin();
+            this.connection = ConnectionFactory.createConnection(this.configuration, Executors.newCachedThreadPool());
+//                this.admin = this.connection.getAdmin();
             }
-            return this.admin;
+            return this.connection.getAdmin();
         } catch (Exception e) {
             logger.debug("hbase.client.connection.impl={}", this.configuration.get("hbase.client.connection.impl"));
             logger.error("get connection false! Exception: {}.", e.getMessage());
@@ -124,15 +122,15 @@ public class HBaseDaoImpl implements HBaseDao<HBaseEntity> {
             if (splitPolicy.length() > 0)
                 hTableDescriptor.setRegionSplitPolicyClassName(splitPolicy);
 
-            logger.debug(format("Creating table '{}' with '{}' columns and default descriptors.",
-                    tableName.getNameAsString(), cfSet.toArray()));
+            logger.info("Creating table {} with {} columns and default descriptors.",
+                    tableName.getNameAsString(), cfSet.toArray());
             if (spiltKeysFile.exists()) {
                 // add a split_keys file
                 admin.createTable(hTableDescriptor, HBaseUtils.getSplitKeys(spiltKeysFile));
             } else {
                 admin.createTable(hTableDescriptor);
-                admin.close();
             }
+            admin.close();
         }else {
             logger.warn("the {} table is existence.", tableName.getNameAsString());
         }

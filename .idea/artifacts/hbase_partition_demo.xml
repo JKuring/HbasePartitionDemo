@@ -1,0 +1,65 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="hbase_partition_demo">
+    <output-path>E:/workJAR/msp</output-path>
+    <root id="archive" name="hbase_partition_demo.jar">
+      <element id="directory" name="META-INF">
+        <element id="file-copy" path="E:/workJAR/msp/META-INF/MANIFEST.MF" />
+      </element>
+      <element id="module-output" name="HbasePartitionDemo" />
+      <element id="directory" name="lib">
+        <element id="library" level="project" name="lib" />
+        <element id="library" level="project" name="Maven: c3p0:c3p0:0.9.1.1" />
+        <element id="library" level="project" name="Maven: ch.qos.logback:logback-classic:1.1.8" />
+        <element id="library" level="project" name="Maven: ch.qos.logback:logback-core:1.1.8" />
+        <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-annotations:2.8.5" />
+        <element id="library" level="project" name="Maven: com.fasterxml:classmate:1.3.3" />
+        <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-el:8.5.6" />
+        <element id="library" level="project" name="Maven: org.springframework:spring-aop:4.3.5.RELEASE" />
+        <element id="library" level="project" name="Maven: org.springframework.batch:spring-batch-core:3.0.7.RELEASE" />
+        <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter:1.4.3.RELEASE" />
+        <element id="library" level="project" name="Maven: javax.validation:validation-api:1.1.0.Final" />
+        <element id="library" level="project" name="Maven: org.springframework.retry:spring-retry:1.1.5.RELEASE" />
+        <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-web:1.4.3.RELEASE" />
+        <element id="library" level="project" name="Maven: javax.batch:javax.batch-api:1.0" />
+        <element id="library" level="project" name="Maven: org.springframework:spring-context-support:4.3.5.RELEASE" />
+        <element id="library" level="project" name="Maven: org.jboss.logging:jboss-logging:3.3.0.Final" />
+        <element id="library" level="project" name="Maven: org.springframework.batch:spring-batch-infrastructure:3.0.7.RELEASE" />
+        <element id="library" level="project" name="Maven: org.springframework:spring-expression:4.3.5.RELEASE" />
+        <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-devtools:1.4.3.RELEASE" />
+        <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:4.3.5.RELEASE" />
+        <element id="library" level="project" name="Maven: org.springframework:spring-core:4.3.5.RELEASE" />
+        <element id="library" level="project" name="Maven: xmlpull:xmlpull:1.1.3.1" />
+        <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-databind:2.8.5" />
+        <element id="library" level="project" name="Maven: org.yaml:snakeyaml:1.17" />
+        <element id="library" level="project" name="Maven: org.springframework.data:spring-data-hadoop-hbase:2.4.0.RELEASE" />
+        <element id="library" level="project" name="Maven: org.slf4j:jcl-over-slf4j:1.7.22" />
+        <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-tomcat:1.4.3.RELEASE" />
+        <element id="library" level="project" name="Maven: org.springframework:spring-tx:4.3.5.RELEASE" />
+        <element id="library" level="project" name="Maven: org.springframework:spring-web:4.3.5.RELEASE" />
+        <element id="library" level="project" name="Maven: org.springframework.data:spring-data-hadoop-batch:2.4.0.RELEASE" />
+        <element id="library" level="project" name="Maven: org.slf4j:log4j-over-slf4j:1.7.22" />
+        <element id="library" level="project" name="Maven: org.springframework:spring-beans:4.3.5.RELEASE" />
+        <element id="library" level="project" name="Maven: xpp3:xpp3_min:1.1.4c" />
+        <element id="library" level="project" name="Maven: com.thoughtworks.xstream:xstream:1.4.7" />
+        <element id="library" level="project" name="Maven: org.springframework:spring-context:4.3.5.RELEASE" />
+        <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-core:8.5.6" />
+        <element id="library" level="project" name="Maven: org.quartz-scheduler:quartz:2.2.1" />
+        <element id="library" level="project" name="Maven: org.codehaus.jettison:jettison:1.2" />
+        <element id="library" level="project" name="Maven: org.slf4j:jul-to-slf4j:1.7.22" />
+        <element id="library" level="project" name="Maven: org.springframework.data:spring-data-hadoop-hive:2.4.0.RELEASE" />
+        <element id="library" level="project" name="Maven: org.springframework.data:spring-data-hadoop-pig:2.4.0.RELEASE" />
+        <element id="library" level="project" name="Maven: org.springframework:spring-jdbc:4.3.5.RELEASE" />
+        <element id="library" level="project" name="Maven: org.apache.tomcat.embed:tomcat-embed-websocket:8.5.6" />
+        <element id="library" level="project" name="Maven: org.hibernate:hibernate-validator:5.2.4.Final" />
+        <element id="library" level="project" name="Maven: com.ibm.jbatch:com.ibm.jbatch-tck-spi:1.0" />
+        <element id="library" level="project" name="Maven: org.springframework.data:spring-data-hadoop:2.4.0.RELEASE" />
+        <element id="library" level="project" name="Maven: org.springframework.data:spring-data-hadoop-core:2.4.0.RELEASE" />
+        <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot:1.4.3.RELEASE" />
+        <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-starter-logging:1.4.3.RELEASE" />
+        <element id="library" level="project" name="Maven: org.springframework.boot:spring-boot-autoconfigure:1.4.3.RELEASE" />
+        <element id="library" level="project" name="Maven: org.slf4j:slf4j-api:1.7.22" />
+        <element id="library" level="project" name="Maven: com.fasterxml.jackson.core:jackson-core:2.8.5" />
+      </element>
+    </root>
+  </artifact>
+</component>

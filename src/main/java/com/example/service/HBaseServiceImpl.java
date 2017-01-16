@@ -56,10 +56,10 @@ public class HBaseServiceImpl implements HBaseService<JobEntity> {
                         hBaseEntity.getCoprocessor(), hBaseEntity.getSplitPolicy(), hBaseEntity.getSpiltKeysFile());
                 hBaseEntity.setCurrentIsCreated(true);
             }
-//            this.hBaseDao.createTable(TableName.valueOf(HBaseUtils.getCurrentTimeTableName(hBaseEntity.getName(),
-//                    System.currentTimeMillis()+addition, 0, jobEntity.getGranularity())), hBaseEntity.getColumns(),
-//                    hBaseEntity.getVersion(), hBaseEntity.getTtl(), hBaseEntity.getCompressionType(),
-//                    hBaseEntity.getCoprocessor(), hBaseEntity.getSplitPolicy(), hBaseEntity.getSpiltKeysFile());
+            this.hBaseDao.createTable(TableName.valueOf(HBaseUtils.getCurrentTimeTableName(hBaseEntity.getName(),
+                    System.currentTimeMillis()+addition, 0, jobEntity.getGranularity())), hBaseEntity.getColumns(),
+                    hBaseEntity.getVersion(), hBaseEntity.getTtl(), hBaseEntity.getCompressionType(),
+                    hBaseEntity.getCoprocessor(), hBaseEntity.getSplitPolicy(), hBaseEntity.getSpiltKeysFile());
         } catch (IOException e) {
             logger.error("Failed to create table, Exception: {}.", e.getMessage());
         }
@@ -99,6 +99,8 @@ public class HBaseServiceImpl implements HBaseService<JobEntity> {
         String dataPath = HADOOP_USER_ROOT + jobEntity.getDataPath() + tmpPath;
         tableParametters.put("importtsv.bulk.output", tableParametters.get("importtsv.bulk.output1") + "/" + tmpTableName[0] + "_" + tmpTableName[1] + tmpPath);
 
+        logger.info("tmp path: {}.",tmpPath);
+        logger.info("data path: {}.",dataPath);
         //加载为系统参数
         jobEntity.addSystemProperties(hBaseDao.getConfiguration());
         try {

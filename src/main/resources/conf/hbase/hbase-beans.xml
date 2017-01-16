@@ -13,19 +13,21 @@
     <hbase:import resource="classpath:conf/hbase/job/hbase-job.xml"/>
 
 
-    <hdp:configuration resources="classpath:conf/hbase/conf/hbase-site.xml"/>
-    <!--classpath:conf/hbase/conf/hbase-policy.xml,-->
-    <!--classpath:conf/hbase/conf/hide-config.xml,-->
-    <!--classpath:conf/hbase/conf/core-site.xml,-->
-    <!--classpath:conf/hbase/conf/hdfs-site.xml,-->
-    <!--classpath:conf/hbase/conf/mapred-site.xml,-->
-    <!--classpath:conf/hbase/conf/yarn-site.xml-->
-    <!--"/>-->
-    <!--<hdp:configuration resources="classpath:conf/hbase/cdh/hbase-site.xml,-->
-    <!--classpath:conf/hbase/cdh/core-site.xml,-->
-    <!--classpath:conf/hbase/cdh/hdfs-site.xml,-->
-    <!--classpath:conf/hbase/cdh/mapred-site.xml,-->
-    <!--classpath:conf/hbase/cdh/yarn-site.xml-->
+    <!--以下配置并不是configuration 的全部配置项，有些干扰kerberos的项没有配置进去-->
+    <!--在HBaseDaoImpl中已用原生HBaseConfiguration.create()屏蔽-->
+    <!--<hdp:configuration resources="classpath:conf/hbase/conf/core-site.xml"/>-->
+    <!--<hdp:configuration resources="classpath:conf/hbase/conf/hbase-site.xml"/>-->
+    <!--<hdp:configuration resources="classpath:conf/hbase/conf/hbase-policy.xml"/>-->
+    <!--<hdp:configuration resources="classpath:conf/hbase/conf/hdfs-site.xml"/>-->
+    <!--<hdp:configuration resources="classpath:conf/hbase/conf/mapred-site.xml"/>-->
+    <!--<hdp:configuration resources="classpath:conf/hbase/conf/yarn-site.xml"/>-->
+
+    <!--<hdp:configuration resources="conf/hbase/conf/core-site.xml,-->
+    <!--conf/hbase/conf/hbase-site.xml,-->
+    <!--conf/hbase/conf/hbase-policy.xml,-->
+    <!--conf/hbase/conf/hdfs-site.xml,-->
+    <!--conf/hbase/conf/mapred-site.xml,-->
+    <!--conf/hbase/conf/yarn-site.xml-->
     <!--"/>-->
 
     <hdp:hbase-configuration configuration-ref="hadoopConfiguration"/>
@@ -61,8 +63,8 @@
     <hbase:bean id="Create_Job_Trigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <hbase:property name="jobDetail" ref="Create_Job"/>
         <hbase:property name="startDelay" value="10000"/><!-- 调度工厂实例化后，经过0秒开始执行调度 900000-->
-        <!--<hbase:property name="cronExpression" value="0 0 5 * * ?"/>&lt;!&ndash; 每2秒调度一次 &ndash;&gt;-->
-        <hbase:property name="cronExpression" value="0 0 18 * * ?"/><!-- 每2秒调度一次 -->
+        <hbase:property name="cronExpression" value="0 0 5 * * ?"/><!-- 每天5点执行 -->
+        <!--<hbase:property name="cronExpression" value="0 0 18 * * ?"/>&lt;!&ndash; 每2秒调度一次 &ndash;&gt;-->
 
     </hbase:bean>
     <!--配置调度工厂-->
@@ -113,8 +115,8 @@
     <hbase:bean id="Delete_Job_Trigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <hbase:property name="jobDetail" ref="Delete_Job"/>
         <hbase:property name="startDelay" value="30000"/><!-- 调度工厂实例化后，经过0秒开始执行调度 900000-->
-        <!--<hbase:property name="cronExpression" value="0 0 4 1/4 * ?"/>&lt;!&ndash; 每2秒调度一次 &ndash;&gt;-->
-        <hbase:property name="cronExpression" value="0 5 18 1/4 * ?"/><!-- 每2秒调度一次 -->
+        <hbase:property name="cronExpression" value="0 0 4 1/4 * ?"/><!-- 每 -->
+        <!--<hbase:property name="cronExpression" value="0 5 18 1/4 * ?"/>&lt;!&ndash; 每2秒调度一次 &ndash;&gt;-->
 
     </hbase:bean>
     <!--配置调度工厂-->

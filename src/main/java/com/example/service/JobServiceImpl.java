@@ -132,12 +132,15 @@ public class JobServiceImpl implements JobService {
                     ) {
                 logger.debug("Task name: {}.", name);
                 final JobEntity job = tasksMap.get(name);
-                threadPoolTaskExecutor.execute(new Runnable() {
-                    @Override
-                    public void run() {
-                        hbaseService.delete(job);
-                    }
-                });
+                // 只删除天表
+                if (job.getGranularity().equals("D")) {
+                    threadPoolTaskExecutor.execute(new Runnable() {
+                        @Override
+                        public void run() {
+                            hbaseService.delete(job);
+                        }
+                    });
+                }
             }
         } else {
             logger.info("Noting to do for this task list, because the list is empty.");

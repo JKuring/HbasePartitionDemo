@@ -20,10 +20,12 @@ public class HBaseKerberos {
     public static Configuration getConfiguration(Configuration configuration) {
         logger.info("Fetch HBase configuration.");
         if (User.isHBaseSecurityEnabled(configuration)) {
-            String confHomePath = System.getProperty("project.path");
+            String confHomePath = System.getProperty("auth.config.path");
             String separator = System.getProperty("file.separator");
             String confDirPath = System.getProperty("user.dir") + separator + confHomePath;
-            logger.info(confDirPath);
+            logger.info("kerberos configuration path: {}.",confDirPath);
+            logger.debug("zookeeper.sasl.clientconfig: {}.",System.getProperty("zookeeper.sasl.clientconfig"));
+            logger.debug("zookeeper.server.principal: {}.",System.getProperty("zookeeper.server.principal"));
             // set zookeeper server pricipal
 //            System.setProperty("zookeeper.sasl.clientconfig", "client");
 //            System.setProperty("zookeeper.server.principal", "zookeeper/hadoop.hadoop_b.com");
@@ -39,9 +41,9 @@ public class HBaseKerberos {
 //            configuration.set("hbase.zookeeper.quorum","shyp-bigdata-b-cn01,shyp-bigdata-b-cn04,shyp-bigdata-b-cn02,shyp-bigdata-b-cn05,shyp-bigdata-b-cn03");
             try {
                 String hostName = InetAddress.getLocalHost().getCanonicalHostName();
-                User.login(configuration, "username.client.keytab.file", "username.client.kerberos.principal", hostName);
+                User.login(configuration, "username.client.keytab.file", "username.client.kerberos.principal", "xx");
                 logger.debug("login ZK client!");
-                ZKUtil.loginClient(configuration, "username.client.keytab.file", "username.client.kerberos.principal", hostName);
+                ZKUtil.loginClient(configuration, "username.client.keytab.file", "username.client.kerberos.principal", "xx");
                 logger.debug("host name: {}.", hostName);
             } catch (UnknownHostException e) {
                 logger.error("UnknownHostException: {}.", e.getMessage());

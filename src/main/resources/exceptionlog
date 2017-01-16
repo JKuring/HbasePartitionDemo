@@ -1,0 +1,16 @@
+2017-01-12 18:50:11.386 WARN  [ClientCnxn:1193] {main-SendThread(shyp-bigdata-b-cn04:24002)} SASL configuration failed: javax.security.auth.login.LoginException: Zookeeper client cannot authenticate using the client section of the supplied JAAS configuration: '/home/ipms/linghang.kong/hbase/conf/hbase/auth/jaas.conf' because of a RuntimeException: java.lang.SecurityException: /home/ipms/linghang.kong/hbase/conf/hbase/auth/jaas.conf (No such file or directory) Will continue connection to Zookeeper server without SASL authentication, if Zookeeper server allows it.
+2017-01-12 18:50:11.386 INFO  [ClientCnxn:1211] {main-SendThread(shyp-bigdata-b-cn04:24002)} Opening socket connection to server shyp-bigdata-b-cn04/10.11.42.26:24002
+2017-01-12 18:50:11.388 INFO  [ClientCnxn:981] {main-SendThread(shyp-bigdata-b-cn04:24002)} Socket connection established, initiating session, client: /10.221.247.6:56594, server: shyp-bigdata-b-cn04/10.11.42.26:24002
+2017-01-12 18:50:11.390 INFO  [ClientCnxn:1322] {main-SendThread(shyp-bigdata-b-cn04:24002)} Unable to reconnect to ZooKeeper service, session 0x5702b241d2fa995e has expired, closing socket connection
+2017-01-12 18:50:11.391 WARN  [ConnectionManager$HConnectionImplementation:2291] {main-EventThread} This client just lost it's session with ZooKeeper, closing it. It will be recreated next time someone needs it
+org.apache.zookeeper.KeeperException$SessionExpiredException: KeeperErrorCode = Session expired
+        at org.apache.hadoop.hbase.zookeeper.ZooKeeperWatcher.connectionEvent(ZooKeeperWatcher.java:683)
+        at org.apache.hadoop.hbase.zookeeper.ZooKeeperWatcher.process(ZooKeeperWatcher.java:567)
+        at org.apache.zookeeper.ClientCnxn$EventThread.processEvent(ClientCnxn.java:554)
+        at org.apache.zookeeper.ClientCnxn$EventThread.run(ClientCnxn.java:529)
+2017-01-12 18:50:11.394 INFO  [ConnectionManager$HConnectionImplementation:1679] {main-EventThread} Closing zookeeper sessionid=0x5702b241d2fa995e
+2017-01-12 18:50:11.394 INFO  [ClientCnxn:543] {main-EventThread} EventThread shut down
+2017-01-12 18:50:12.342 WARN  [RecoverableZooKeeper:276] {main} Possibly transient ZooKeeper, quorum=shyp-bigdata-b-cn01:24002,shyp-bigdata-b-cn04:24002,shyp-bigdata-b-cn02:24002,shyp-bigdata-b-cn05:24002,shyp-bigdata-b-cn03:24002, exception=org.apache.zookeeper.KeeperException$SessionExpiredException: KeeperErrorCode = Session expired for /hbase/hbaseid
+
+
+初步判断是server上没有读到keytab文件

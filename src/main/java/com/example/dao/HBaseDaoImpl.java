@@ -6,7 +6,6 @@ import com.example.interfaces.dto.HBaseEntity;
 import com.example.utils.HBaseUtils;
 import com.example.utils.kerberos.HBaseKerberos;
 import org.apache.hadoop.conf.Configuration;
-import org.apache.hadoop.hbase.HBaseConfiguration;
 import org.apache.hadoop.hbase.HColumnDescriptor;
 import org.apache.hadoop.hbase.HTableDescriptor;
 import org.apache.hadoop.hbase.TableName;
@@ -56,7 +55,8 @@ public class HBaseDaoImpl implements HBaseDao<HBaseEntity> {
      */
     public HBaseDaoImpl(Configuration configuration) {
         // 屏蔽spring data装载的配置
-        this.configuration = HBaseConfiguration.create();
+//        this.configuration = HBaseConfiguration.create();
+        this.configuration = configuration;
         if (this.configuration == null) {
             logger.error("configuration is null!");
             System.exit(1);

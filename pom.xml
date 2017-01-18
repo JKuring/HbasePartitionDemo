@@ -219,42 +219,42 @@
         </plugins>
         <resources>
             <resource>
-                <targetPath>../huawei/lib/</targetPath>
+                <targetPath>../lib/</targetPath>
                 <directory>lib/</directory>
                 <includes>
                     <include>*</include>
                 </includes>
             </resource>
             <!--spring内部依赖-->
-            <resource>
-                <targetPath>.</targetPath>
-                <directory>src/main/resources/</directory>
-                <excludes>
-                    <exclude>startup.sh</exclude>
-                    <exclude>*log</exclude>
-                </excludes>
-            </resource>
+            <!--<resource>-->
+                <!--<targetPath>.</targetPath>-->
+                <!--<directory>src/main/resources/</directory>-->
+                <!--<includes>-->
+                    <!--<include>conf/beans.xml</include>-->
+                <!--</includes>-->
+                <!--<excludes>-->
+                    <!--<exclude>conf/hbase/auth/*</exclude>-->
+                    <!--<exclude>conf/*.xml</exclude>-->
+                    <!--<exclude>*.sh</exclude>-->
+                    <!--<exclude>*log</exclude>-->
+                <!--</excludes>-->
+            <!--</resource>-->
             <!--外部配置-->
             <resource>
-                <targetPath>../resources</targetPath>
+                <targetPath>../</targetPath>
                 <directory>src/main/resources/</directory>
                 <excludes>
-                    <exclude>conf/hadoop/*</exclude>
-                    <exclude>conf/hbase/*.xml</exclude>
-                    <exclude>conf/hbase/conf/*</exclude>
-                    <exclude>conf/hbase/job/*</exclude>
-                    <exclude>conf/hbase/table/*.xml</exclude>
-                    <exclude>*.xml</exclude>
+                    <exclude>*.sh</exclude>
+                    <exclude>*log</exclude>
                     <exclude>*.properties</exclude>
-                    <exclude>startup.sh</exclude>
                 </excludes>
             </resource>
             <!--启动脚本-->
             <resource>
-                <targetPath>../</targetPath>
+                <targetPath>../bin</targetPath>
                 <directory>src/main/resources/</directory>
                 <includes>
-                    <include>startup.sh</include>
+                    <include>partition.sh</include>
                 </includes>
             </resource>
         </resources>

@@ -3,7 +3,7 @@
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
        xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-    <hbase:import resource="classpath:conf/hbase/table/hbase-table.xml"/>
+    <hbase:import resource="classpath:hbase/table/hbase-table.xml"/>
 
     <!--gn-->
     <hbase:bean id="xdr_data:ps_gn_pdp_event_job" class="com.example.data.entity.JobEntityImpl">

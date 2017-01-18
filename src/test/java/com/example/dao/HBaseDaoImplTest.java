@@ -13,7 +13,7 @@ import java.util.Arrays;
 public class HBaseDaoImplTest {
     @Test
     public void getConfiguration() throws Exception {
-        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:beans.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:conf/hbase/conf/beans.xml");
         HBaseDaoImpl hbaseDaoImpl = context.getBean("hbaseDaoImpl", HBaseDaoImpl.class);
         System.err.println(Arrays.asList(HBaseUtils.getConnection(hbaseDaoImpl.getConfiguration()).getTableNames()));
     }

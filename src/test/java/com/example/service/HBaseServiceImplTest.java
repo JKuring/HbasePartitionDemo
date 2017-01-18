@@ -15,7 +15,7 @@ public class HBaseServiceImplTest {
 
     @Test
     public void delete() throws Exception {
-        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:beans.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:conf/hbase/conf/beans.xml");
         HBaseServiceImpl hbaseServiceImpl = context.getBean("HBaseServiceImpl", HBaseServiceImpl.class);
 //        HBaseEntity hBaseEntity = context.getBean("xdr_data:ps_gn_http_event_K", HBaseEntityImpl.class);
         JobEntity jobEntity = context.getBean("xdr_data:ps_gn_http_event_job", JobEntityImpl.class);
@@ -39,7 +39,7 @@ public class HBaseServiceImplTest {
 
     @Test
     public void createTable() throws Exception {
-        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:beans.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:conf/hbase/conf/beans.xml");
         HBaseServiceImpl hbaseServiceImpl = context.getBean("HBaseServiceImpl", HBaseServiceImpl.class);
 //        HBaseEntity hBaseEntity = context.getBean("xdr_data:ps_gn_http_event_K", HBaseEntityImpl.class);
         JobEntity jobEntity = context.getBean("xdr_data:ps_gn_http_event_job", JobEntityImpl.class);
@@ -57,7 +57,7 @@ public class HBaseServiceImplTest {
 
     @Test
     public void partition() throws Exception {
-        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:beans.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:conf/hbase/conf/beans.xml");
         HBaseServiceImpl hbaseServiceImpl = context.getBean("HBaseServiceImpl", HBaseServiceImpl.class);
 //        HBaseEntity hBaseEntity = context.getBean("xdr_data:ps_gn_http_event_K", HBaseEntityImpl.class);
         JobEntity jobEntity = context.getBean("xdr_data:ps_gn_http_event_job", JobEntityImpl.class);
@@ -76,7 +76,7 @@ public class HBaseServiceImplTest {
     private static final Logger logger = LoggerFactory.getLogger(HBaseServiceImplTest.class);
     @Test
     public void createSchedulerJob() throws Exception {
-        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:beans.xml");
+        ApplicationContext context = new ClassPathXmlApplicationContext("classpath:conf/hbase/conf/beans.xml");
         HBaseServiceImpl hbaseServiceImpl = context.getBean("HBaseServiceImpl", HBaseServiceImpl.class);
 
         hbaseServiceImpl.createSchedulerJob(context.getBean("xdr_data:ps_gn_pdp_event_job", JobEntityImpl.class));

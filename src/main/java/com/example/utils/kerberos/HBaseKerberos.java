@@ -6,6 +6,7 @@ import org.apache.hadoop.hbase.zookeeper.ZKUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -19,10 +20,11 @@ public class HBaseKerberos {
 
     public static Configuration getConfiguration(Configuration configuration) {
         logger.info("Fetch HBase configuration.");
+        File directory = new File("").getAbsoluteFile().getParentFile();
         if (User.isHBaseSecurityEnabled(configuration)) {
             String confHomePath = System.getProperty("auth.config.path");
             String separator = System.getProperty("file.separator");
-            String confDirPath = System.getProperty("user.dir") + separator + confHomePath;
+            String confDirPath = directory.getAbsolutePath() + separator + confHomePath;
             logger.info("kerberos configuration path: {}.",confDirPath);
             logger.debug("zookeeper.sasl.clientconfig: {}.",System.getProperty("zookeeper.sasl.clientconfig"));
             logger.debug("zookeeper.server.principal: {}.",System.getProperty("zookeeper.server.principal"));
@@ -41,6 +43,7 @@ public class HBaseKerberos {
 //            configuration.set("hbase.zookeeper.quorum","shyp-bigdata-b-cn01,shyp-bigdata-b-cn04,shyp-bigdata-b-cn02,shyp-bigdata-b-cn05,shyp-bigdata-b-cn03");
             try {
                 String hostName = InetAddress.getLocalHost().getCanonicalHostName();
+                logger.debug("hadoop.security.authentication: {}.",configuration.get("hadoop.security.authentication"));
                 User.login(configuration, "username.client.keytab.file", "username.client.kerberos.principal", "xx");
                 logger.debug("login ZK client!");
                 ZKUtil.loginClient(configuration, "username.client.keytab.file", "username.client.kerberos.principal", "xx");

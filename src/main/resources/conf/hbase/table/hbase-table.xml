@@ -12,7 +12,7 @@
         <hbase:property name="compressionType" value="snappy"/>
         <hbase:property name="ttl" value="2592000"/>
         <hbase:property name="splitPolicy" value="org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy"/>
-        <hbase:property name="spiltKeysFile" value="file:${user.dir}/resources/conf/hbase/table/splits.txt"/>
+        <hbase:property name="spiltKeysFile" value="file:${user.dir}../conf/hbase/table/splits.txt"/>
         <hbase:property name="coprocessor" value="org.apache.hadoop.hbase.coprocessor.AggregateImplementation"/>
     </hbase:bean>
 
@@ -24,7 +24,7 @@
         <hbase:property name="compressionType" value="snappy"/>
         <hbase:property name="ttl" value="2592000"/>
         <hbase:property name="splitPolicy" value="org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy"/>
-        <hbase:property name="spiltKeysFile" value="file:${user.dir}/resources/conf/hbase/table/splits.txt"/>
+        <hbase:property name="spiltKeysFile" value="file:${user.dir}../conf/hbase/table/splits.txt"/>
         <hbase:property name="coprocessor" value="org.apache.hadoop.hbase.coprocessor.AggregateImplementation"/>
     </hbase:bean>
 
@@ -36,7 +36,7 @@
         <hbase:property name="compressionType" value="snappy"/>
         <hbase:property name="ttl" value="2592000"/>
         <hbase:property name="splitPolicy" value="org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy"/>
-        <hbase:property name="spiltKeysFile" value="file:${user.dir}/resources/conf/hbase/table/splits.txt"/>
+        <hbase:property name="spiltKeysFile" value="file:${user.dir}../conf/hbase/table/splits.txt"/>
         <hbase:property name="coprocessor" value="org.apache.hadoop.hbase.coprocessor.AggregateImplementation"/>
     </hbase:bean>
 
@@ -48,7 +48,7 @@
         <hbase:property name="compressionType" value="snappy"/>
         <hbase:property name="ttl" value="2592000"/>
         <hbase:property name="splitPolicy" value="org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy"/>
-        <hbase:property name="spiltKeysFile" value="file:${user.dir}/resources/conf/hbase/table/splits.txt"/>
+        <hbase:property name="spiltKeysFile" value="file:${user.dir}../conf/hbase/table/splits.txt"/>
         <hbase:property name="coprocessor" value="org.apache.hadoop.hbase.coprocessor.AggregateImplementation"/>
     </hbase:bean>
 
@@ -60,7 +60,7 @@
         <hbase:property name="compressionType" value="snappy"/>
         <hbase:property name="ttl" value="2592000"/>
         <hbase:property name="splitPolicy" value="org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy"/>
-        <hbase:property name="spiltKeysFile" value="file:${user.dir}/resources/conf/hbase/table/splits.txt"/>
+        <hbase:property name="spiltKeysFile" value="file:${user.dir}../conf/hbase/table/splits.txt"/>
         <hbase:property name="coprocessor" value="org.apache.hadoop.hbase.coprocessor.AggregateImplementation"/>
     </hbase:bean>
 
@@ -72,7 +72,7 @@
         <hbase:property name="compressionType" value="snappy"/>
         <hbase:property name="ttl" value="2592000"/>
         <hbase:property name="splitPolicy" value="org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy"/>
-        <hbase:property name="spiltKeysFile" value="file:${user.dir}/resources/conf/hbase/table/splits.txt"/>
+        <hbase:property name="spiltKeysFile" value="file:${user.dir}../conf/hbase/table/splits.txt"/>
         <hbase:property name="coprocessor" value="org.apache.hadoop.hbase.coprocessor.AggregateImplementation"/>
     </hbase:bean>
 
@@ -84,7 +84,7 @@
         <hbase:property name="compressionType" value="snappy"/>
         <hbase:property name="ttl" value="2592000"/>
         <hbase:property name="splitPolicy" value="org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy"/>
-        <hbase:property name="spiltKeysFile" value="file:${user.dir}/resources/conf/hbase/table/splits.txt"/>
+        <hbase:property name="spiltKeysFile" value="file:${user.dir}../conf/hbase/table/splits.txt"/>
         <hbase:property name="coprocessor" value="org.apache.hadoop.hbase.coprocessor.AggregateImplementation"/>
     </hbase:bean>
 
@@ -96,7 +96,7 @@
         <hbase:property name="compressionType" value="snappy"/>
         <hbase:property name="ttl" value="2592000"/>
         <hbase:property name="splitPolicy" value="org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy"/>
-        <hbase:property name="spiltKeysFile" value="file:${user.dir}/resources/conf/hbase/table/splits.txt"/>
+        <hbase:property name="spiltKeysFile" value="file:${user.dir}../conf/hbase/table/splits.txt"/>
         <hbase:property name="coprocessor" value="org.apache.hadoop.hbase.coprocessor.AggregateImplementation"/>
     </hbase:bean>
 
@@ -108,7 +108,7 @@
         <hbase:property name="compressionType" value="snappy"/>
         <hbase:property name="ttl" value="2592000"/>
         <hbase:property name="splitPolicy" value="org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy"/>
-        <hbase:property name="spiltKeysFile" value="file:${user.dir}/resources/conf/hbase/table/splits.txt"/>
+        <hbase:property name="spiltKeysFile" value="file:${user.dir}../conf/hbase/table/splits.txt"/>
         <hbase:property name="coprocessor" value="org.apache.hadoop.hbase.coprocessor.AggregateImplementation"/>
     </hbase:bean>
 
@@ -120,7 +120,7 @@
         <hbase:property name="compressionType" value="snappy"/>
         <hbase:property name="ttl" value="2592000"/>
         <hbase:property name="splitPolicy" value="org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy"/>
-        <hbase:property name="spiltKeysFile" value="file:${user.dir}/resources/conf/hbase/table/splits.txt"/>
+        <hbase:property name="spiltKeysFile" value="file:${user.dir}../conf/hbase/table/splits.txt"/>
         <hbase:property name="coprocessor" value="org.apache.hadoop.hbase.coprocessor.AggregateImplementation"/>
     </hbase:bean>
 
@@ -132,7 +132,7 @@
         <hbase:property name="compressionType" value="snappy"/>
         <hbase:property name="ttl" value="2592000"/>
         <hbase:property name="splitPolicy" value="org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy"/>
-        <hbase:property name="spiltKeysFile" value="file:${user.dir}/resources/conf/hbase/table/splits.txt"/>
+        <hbase:property name="spiltKeysFile" value="file:${user.dir}../conf/hbase/table/splits.txt"/>
         <hbase:property name="coprocessor" value="org.apache.hadoop.hbase.coprocessor.AggregateImplementation"/>
     </hbase:bean>
 
@@ -144,7 +144,7 @@
         <hbase:property name="compressionType" value="snappy"/>
         <hbase:property name="ttl" value="2592000"/>
         <hbase:property name="splitPolicy" value="org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy"/>
-        <hbase:property name="spiltKeysFile" value="file:${user.dir}/resources/conf/hbase/table/splits.txt"/>
+        <hbase:property name="spiltKeysFile" value="file:${user.dir}../conf/hbase/table/splits.txt"/>
         <hbase:property name="coprocessor" value="org.apache.hadoop.hbase.coprocessor.AggregateImplementation"/>
     </hbase:bean>
 
@@ -157,7 +157,7 @@
         <hbase:property name="compressionType" value="snappy"/>
         <hbase:property name="ttl" value="2592000"/>
         <hbase:property name="splitPolicy" value="org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy"/>
-        <hbase:property name="spiltKeysFile" value="file:${user.dir}/resources/conf/hbase/table/splits.txt"/>
+        <hbase:property name="spiltKeysFile" value="file:${user.dir}../conf/hbase/table/splits.txt"/>
         <hbase:property name="coprocessor" value="org.apache.hadoop.hbase.coprocessor.AggregateImplementation"/>
     </hbase:bean>
 
@@ -169,7 +169,7 @@
         <hbase:property name="compressionType" value="snappy"/>
         <hbase:property name="ttl" value="2592000"/>
         <hbase:property name="splitPolicy" value="org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy"/>
-        <hbase:property name="spiltKeysFile" value="file:${user.dir}/resources/conf/hbase/table/splits.txt"/>
+        <hbase:property name="spiltKeysFile" value="file:${user.dir}../conf/hbase/table/splits.txt"/>
         <hbase:property name="coprocessor" value="org.apache.hadoop.hbase.coprocessor.AggregateImplementation"/>
     </hbase:bean>
 
@@ -181,7 +181,7 @@
         <hbase:property name="compressionType" value="snappy"/>
         <hbase:property name="ttl" value="2592000"/>
         <hbase:property name="splitPolicy" value="org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy"/>
-        <hbase:property name="spiltKeysFile" value="file:${user.dir}/resources/conf/hbase/table/splits.txt"/>
+        <hbase:property name="spiltKeysFile" value="file:${user.dir}../conf/hbase/table/splits.txt"/>
         <hbase:property name="coprocessor" value="org.apache.hadoop.hbase.coprocessor.AggregateImplementation"/>
     </hbase:bean>
 
@@ -193,7 +193,7 @@
         <hbase:property name="compressionType" value="snappy"/>
         <hbase:property name="ttl" value="2592000"/>
         <hbase:property name="splitPolicy" value="org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy"/>
-        <hbase:property name="spiltKeysFile" value="file:${user.dir}/resources/conf/hbase/table/splits.txt"/>
+        <hbase:property name="spiltKeysFile" value="file:${user.dir}../conf/hbase/table/splits.txt"/>
         <hbase:property name="coprocessor" value="org.apache.hadoop.hbase.coprocessor.AggregateImplementation"/>
     </hbase:bean>
 
@@ -205,7 +205,7 @@
         <hbase:property name="compressionType" value="snappy"/>
         <hbase:property name="ttl" value="2592000"/>
         <hbase:property name="splitPolicy" value="org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy"/>
-        <hbase:property name="spiltKeysFile" value="file:${user.dir}/resources/conf/hbase/table/splits.txt"/>
+        <hbase:property name="spiltKeysFile" value="file:${user.dir}../conf/hbase/table/splits.txt"/>
         <hbase:property name="coprocessor" value="org.apache.hadoop.hbase.coprocessor.AggregateImplementation"/>
     </hbase:bean>
 
@@ -217,7 +217,7 @@
         <hbase:property name="compressionType" value="snappy"/>
         <hbase:property name="ttl" value="2592000"/>
         <hbase:property name="splitPolicy" value="org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy"/>
-        <hbase:property name="spiltKeysFile" value="file:${user.dir}/resources/conf/hbase/table/splits.txt"/>
+        <hbase:property name="spiltKeysFile" value="file:${user.dir}../conf/hbase/table/splits.txt"/>
         <hbase:property name="coprocessor" value="org.apache.hadoop.hbase.coprocessor.AggregateImplementation"/>
     </hbase:bean>
 
@@ -229,7 +229,7 @@
         <hbase:property name="compressionType" value="snappy"/>
         <hbase:property name="ttl" value="2592000"/>
         <hbase:property name="splitPolicy" value="org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy"/>
-        <hbase:property name="spiltKeysFile" value="file:${user.dir}/resources/conf/hbase/table/splits.txt"/>
+        <hbase:property name="spiltKeysFile" value="file:${user.dir}../conf/hbase/table/splits.txt"/>
         <hbase:property name="coprocessor" value="org.apache.hadoop.hbase.coprocessor.AggregateImplementation"/>
     </hbase:bean>
 
@@ -241,7 +241,7 @@
         <hbase:property name="compressionType" value="snappy"/>
         <hbase:property name="ttl" value="2592000"/>
         <hbase:property name="splitPolicy" value="org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy"/>
-        <hbase:property name="spiltKeysFile" value="file:${user.dir}/resources/conf/hbase/table/splits.txt"/>
+        <hbase:property name="spiltKeysFile" value="file:${user.dir}../conf/hbase/table/splits.txt"/>
         <hbase:property name="coprocessor" value="org.apache.hadoop.hbase.coprocessor.AggregateImplementation"/>
     </hbase:bean>
 
@@ -253,7 +253,7 @@
         <hbase:property name="compressionType" value="snappy"/>
         <hbase:property name="ttl" value="2592000"/>
         <hbase:property name="splitPolicy" value="org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy"/>
-        <hbase:property name="spiltKeysFile" value="file:${user.dir}/resources/conf/hbase/table/splits.txt"/>
+        <hbase:property name="spiltKeysFile" value="file:${user.dir}../conf/hbase/table/splits.txt"/>
         <hbase:property name="coprocessor" value="org.apache.hadoop.hbase.coprocessor.AggregateImplementation"/>
     </hbase:bean>
 
@@ -265,7 +265,7 @@
         <hbase:property name="compressionType" value="snappy"/>
         <hbase:property name="ttl" value="2592000"/>
         <hbase:property name="splitPolicy" value="org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy"/>
-        <hbase:property name="spiltKeysFile" value="file:${user.dir}/resources/conf/hbase/table/splits.txt"/>
+        <hbase:property name="spiltKeysFile" value="file:${user.dir}../conf/hbase/table/splits.txt"/>
         <hbase:property name="coprocessor" value="org.apache.hadoop.hbase.coprocessor.AggregateImplementation"/>
     </hbase:bean>
 
@@ -277,7 +277,7 @@
         <hbase:property name="compressionType" value="snappy"/>
         <hbase:property name="ttl" value="2592000"/>
         <hbase:property name="splitPolicy" value="org.apache.hadoop.hbase.regionserver.ConstantSizeRegionSplitPolicy"/>
-        <hbase:property name="spiltKeysFile" value="file:${user.dir}/resources/conf/hbase/table/splits.txt"/>
+        <hbase:property name="spiltKeysFile" value="file:${user.dir}../conf/hbase/table/splits.txt"/>
         <hbase:property name="coprocessor" value="org.apache.hadoop.hbase.coprocessor.AggregateImplementation"/>
     </hbase:bean>
 

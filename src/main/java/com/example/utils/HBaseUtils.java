@@ -120,7 +120,7 @@ public class HBaseUtils {
         return buffer.toArray(new byte[buffer.size()][]);
     }
 
-    public static String getCurrentTimeTableName(String tableName,long currentTime, int delay, String granularity){
+    public static String getCurrentTimeTableName(String tableName,long currentTime, long delay, String granularity){
         String[] date = String.valueOf(TimeTransform.getDate(currentTime - delay)).split("\\-");
         String year = date[0];
         String mouth = date[1];
@@ -141,7 +141,7 @@ public class HBaseUtils {
     }
 
     public static String getCurrentTimePath(long currentTime, int delay){
-        String[] date = String.valueOf(TimeTransform.getDate(currentTime - delay * 60 * 1000)).split("\\-");
+        String[] date = String.valueOf(TimeTransform.getDate(currentTime - delay * 1000L)).split("\\-");
         String year = date[0];
         String mouth = date[1];
         String day = date[2];

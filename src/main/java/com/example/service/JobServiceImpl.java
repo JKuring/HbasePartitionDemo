@@ -125,7 +125,7 @@ public class JobServiceImpl implements JobService {
     }
 
     public void doDeleteTableJobs(){
-        logger.info("Start all tasks of the created tables.");
+        logger.info("Start all tasks to delete tables..");
         tasksMap = taskService.getTasksMap();
         if (tasksMap.size() > 0) {
             for (String name : tasksMap.keySet()

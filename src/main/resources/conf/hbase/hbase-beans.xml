@@ -100,7 +100,7 @@
     <hbase:bean id="Delete_Job_Trigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <hbase:property name="jobDetail" ref="Delete_Job"/>
         <hbase:property name="startDelay" value="30000"/><!-- 调度工厂实例化后，经过0秒开始执行调度 900000-->
-        <hbase:property name="cronExpression" value="0 0 4 1/4 * ?"/><!-- 每 -->
+        <hbase:property name="cronExpression" value="0 30 13 * * ?"/><!-- 每 -->
         <!--<hbase:property name="cronExpression" value="0 5 18 1/4 * ?"/>&lt;!&ndash; 每2秒调度一次 &ndash;&gt;-->
 
     </hbase:bean>

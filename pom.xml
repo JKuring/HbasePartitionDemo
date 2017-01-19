@@ -246,7 +246,6 @@
                 <excludes>
                     <exclude>*.sh</exclude>
                     <exclude>*log</exclude>
-                    <exclude>*.properties</exclude>
                 </excludes>
             </resource>
             <!--启动脚本-->

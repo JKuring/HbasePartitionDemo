@@ -68,7 +68,7 @@ public class HBaseServiceImpl implements HBaseService<JobEntity> {
     public void delete(JobEntity jobEntity){
         HBaseEntity hBaseEntity = (HBaseEntity) jobEntity.getTableEntity();
         try{
-            String tableName = HBaseUtils.getCurrentTimeTableName(hBaseEntity.getName(),System.currentTimeMillis()-hBaseEntity.getTtl()*1000,0,jobEntity.getGranularity());
+            String tableName = HBaseUtils.getCurrentTimeTableName(hBaseEntity.getName(),System.currentTimeMillis()-hBaseEntity.getTtl()*1000L,0,jobEntity.getGranularity());
             this.hBaseDao.deleteTable(TableName.valueOf(tableName));
         }catch (Exception e){
             logger.error("Failed to delete the {} table, exception: {}.",hBaseEntity.getName(),e.getMessage());

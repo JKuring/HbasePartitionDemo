@@ -128,8 +128,10 @@ public class HBaseDaoImpl implements HBaseDao<HBaseEntity> {
                     tableName.getNameAsString(), cfSet.toArray());
             if (spiltKeysFile.exists()) {
                 // add a split_keys file
+                logger.debug("use SplitKeysFile: {}.",spiltKeysFile.getName());
                 admin.createTable(hTableDescriptor, HBaseUtils.getSplitKeys(spiltKeysFile));
             } else {
+                logger.debug("create the table without SplitKeysFile.");
                 admin.createTable(hTableDescriptor);
             }
             admin.close();

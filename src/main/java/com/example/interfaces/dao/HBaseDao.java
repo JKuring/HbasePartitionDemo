@@ -2,6 +2,7 @@ package com.example.interfaces.dao;
 
 import org.apache.hadoop.conf.Configuration;
 import org.apache.hadoop.hbase.TableName;
+import org.apache.hadoop.hbase.client.Connection;
 
 import java.io.Closeable;
 import java.io.File;
@@ -19,4 +20,8 @@ public interface HBaseDao<T> extends BaseDao<T>, Closeable {
     public Configuration getConfiguration();
 
     public void setConfiguration(Configuration configuration);
+
+    public Connection getConnection();
+
+    public void setConnection(Connection connection);
 }

@@ -14,7 +14,7 @@
         <hbase:property name="delay" value="900"/>
         <hbase:property name="propertiesMap">
             <hbase:map key-type="java.lang.String" value-type="java.lang.String">
-                <hbase:entry key="importtsv.columns" value="HBASE_ROWEY,cf"/>
+                <hbase:entry key="importtsv.columns" value="HBASE_ROW_KEY,cf"/>
                 <hbase:entry key="importtsv.bulk.output1" value="/tmp/hbload"/>
                 <!--<hbase:entry key="importtsv.value.encrypts" value="chars"/>-->
                 <hbase:entry key="importtsv.mapper.class" value="com.example.service.mapreduce.TsvImporterPutMapper"/>
@@ -37,7 +37,7 @@
         <hbase:property name="delay" value="900"/>
         <hbase:property name="propertiesMap">
             <hbase:map key-type="java.lang.String" value-type="java.lang.String">
-                <hbase:entry key="importtsv.columns" value="HBASE_ROWEY,cf"/>
+                <hbase:entry key="importtsv.columns" value="HBASE_ROW_KEY,cf"/>
                 <hbase:entry key="importtsv.bulk.output1" value="/tmp/hbload"/>
                 <!--<hbase:entry key="importtsv.value.encrypts" value="chars"/>-->
                 <hbase:entry key="importtsv.mapper.class" value="com.example.service.mapreduce.TsvImporterPutMapper"/>
@@ -60,7 +60,7 @@
         <hbase:property name="delay" value="900"/>
         <hbase:property name="propertiesMap">
             <hbase:map key-type="java.lang.String" value-type="java.lang.String">
-                <hbase:entry key="importtsv.columns" value="HBASE_ROWEY,cf"/>
+                <hbase:entry key="importtsv.columns" value="HBASE_ROW_KEY,cf"/>
                 <hbase:entry key="importtsv.bulk.output1" value="/tmp/hbload"/>
                 <!--<hbase:entry key="importtsv.value.encrypts" value="chars"/>-->
                 <hbase:entry key="importtsv.mapper.class" value="com.example.service.mapreduce.TsvImporterPutMapper"/>
@@ -83,7 +83,7 @@
         <hbase:property name="delay" value="900"/>
         <hbase:property name="propertiesMap">
             <hbase:map key-type="java.lang.String" value-type="java.lang.String">
-                <hbase:entry key="importtsv.columns" value="HBASE_ROWEY,cf"/>
+                <hbase:entry key="importtsv.columns" value="HBASE_ROW_KEY,cf"/>
                 <hbase:entry key="importtsv.bulk.output1" value="/tmp/hbload"/>
                 <!--<hbase:entry key="importtsv.value.encrypts" value="chars"/>-->
                 <hbase:entry key="importtsv.mapper.class" value="com.example.service.mapreduce.TsvImporterPutMapper"/>
@@ -106,7 +106,7 @@
         <hbase:property name="delay" value="900"/>
         <hbase:property name="propertiesMap">
             <hbase:map key-type="java.lang.String" value-type="java.lang.String">
-                <hbase:entry key="importtsv.columns" value="HBASE_ROWEY,cf"/>
+                <hbase:entry key="importtsv.columns" value="HBASE_ROW_KEY,cf"/>
                 <hbase:entry key="importtsv.bulk.output1" value="/tmp/hbload"/>
                 <!--<hbase:entry key="importtsv.value.encrypts" value="chars"/>-->
                 <hbase:entry key="importtsv.mapper.class" value="com.example.service.mapreduce.TsvImporterPutMapper"/>
@@ -130,7 +130,7 @@
         <hbase:property name="delay" value="900"/>
         <hbase:property name="propertiesMap">
             <hbase:map key-type="java.lang.String" value-type="java.lang.String">
-                <hbase:entry key="importtsv.columns" value="HBASE_ROWEY,cf"/>
+                <hbase:entry key="importtsv.columns" value="HBASE_ROW_KEY,cf"/>
                 <hbase:entry key="importtsv.bulk.output1" value="/tmp/hbload"/>
                 <!--<hbase:entry key="importtsv.value.encrypts" value="chars"/>-->
                 <hbase:entry key="importtsv.mapper.class" value="com.example.service.mapreduce.TsvImporterPutMapper"/>
@@ -147,13 +147,13 @@
 
     <hbase:bean id="xdr_data:ps_gn_http_event_job" class="com.example.data.entity.JobEntityImpl">
         <hbase:constructor-arg name="jobName" value="xdr_data:ps_gn_http_event_job"/>
-        <hbase:constructor-arg name="tableEntity" ref="xdr_data:ps_gn_http_event"/>
+        <hbase:constructor-arg name="tableEntity" ref="xdr_data:ps_gn_http_event_K"/>
         <hbase:property name="dataPath" value="/rawdata/xdr/gn/gn_http"/>
         <hbase:property name="granularity" value="D"/>
         <hbase:property name="delay" value="900"/>
         <hbase:property name="propertiesMap">
             <hbase:map key-type="java.lang.String" value-type="java.lang.String">
-                <hbase:entry key="importtsv.columns" value="HBASE_ROWEY,cf"/>
+                <hbase:entry key="importtsv.columns" value="HBASE_ROW_KEY,cf"/>
                 <hbase:entry key="importtsv.bulk.output1" value="/tmp/hbload"/>
                 <!--<hbase:entry key="importtsv.value.encrypts" value="chars"/>-->
                 <hbase:entry key="importtsv.mapper.class" value="com.example.service.mapreduce.TsvImporterPutMapper"/>
@@ -176,7 +176,7 @@
         <hbase:property name="delay" value="900"/>
         <hbase:property name="propertiesMap">
             <hbase:map key-type="java.lang.String" value-type="java.lang.String">
-                <hbase:entry key="importtsv.columns" value="HBASE_ROWEY,cf"/>
+                <hbase:entry key="importtsv.columns" value="HBASE_ROW_KEY,cf"/>
                 <hbase:entry key="importtsv.bulk.output1" value="/tmp/hbload"/>
                 <!--<hbase:entry key="importtsv.value.encrypts" value="chars"/>-->
                 <hbase:entry key="importtsv.mapper.class" value="com.example.service.mapreduce.TsvImporterPutMapper"/>
@@ -199,7 +199,7 @@
         <hbase:property name="delay" value="900"/>
         <hbase:property name="propertiesMap">
             <hbase:map key-type="java.lang.String" value-type="java.lang.String">
-                <hbase:entry key="importtsv.columns" value="HBASE_ROWEY,cf"/>
+                <hbase:entry key="importtsv.columns" value="HBASE_ROW_KEY,cf"/>
                 <hbase:entry key="importtsv.bulk.output1" value="/tmp/hbload"/>
                 <!--<hbase:entry key="importtsv.value.encrypts" value="chars"/>-->
                 <hbase:entry key="importtsv.mapper.class" value="com.example.service.mapreduce.TsvImporterPutMapper"/>
@@ -222,7 +222,7 @@
         <hbase:property name="delay" value="900"/>
         <hbase:property name="propertiesMap">
             <hbase:map key-type="java.lang.String" value-type="java.lang.String">
-                <hbase:entry key="importtsv.columns" value="HBASE_ROWEY,cf"/>
+                <hbase:entry key="importtsv.columns" value="HBASE_ROW_KEY,cf"/>
                 <hbase:entry key="importtsv.bulk.output1" value="/tmp/hbload"/>
                 <!--<hbase:entry key="importtsv.value.encrypts" value="chars"/>-->
                 <hbase:entry key="importtsv.mapper.class" value="com.example.service.mapreduce.TsvImporterPutMapper"/>
@@ -245,7 +245,7 @@
         <hbase:property name="delay" value="900"/>
         <hbase:property name="propertiesMap">
             <hbase:map key-type="java.lang.String" value-type="java.lang.String">
-                <hbase:entry key="importtsv.columns" value="HBASE_ROWEY,cf"/>
+                <hbase:entry key="importtsv.columns" value="HBASE_ROW_KEY,cf"/>
                 <hbase:entry key="importtsv.bulk.output1" value="/tmp/hbload"/>
                 <!--<hbase:entry key="importtsv.value.encrypts" value="chars"/>-->
                 <hbase:entry key="importtsv.mapper.class" value="com.example.service.mapreduce.TsvImporterPutMapper"/>
@@ -268,7 +268,7 @@
         <hbase:property name="delay" value="900"/>
         <hbase:property name="propertiesMap">
             <hbase:map key-type="java.lang.String" value-type="java.lang.String">
-                <hbase:entry key="importtsv.columns" value="HBASE_ROWEY,cf"/>
+                <hbase:entry key="importtsv.columns" value="HBASE_ROW_KEY,cf"/>
                 <hbase:entry key="importtsv.bulk.output1" value="/tmp/hbload"/>
                 <!--<hbase:entry key="importtsv.value.encrypts" value="chars"/>-->
                 <hbase:entry key="importtsv.mapper.class" value="com.example.service.mapreduce.TsvImporterPutMapper"/>
@@ -294,7 +294,7 @@
         <hbase:property name="delay" value="900"/>
         <hbase:property name="propertiesMap">
             <hbase:map key-type="java.lang.String" value-type="java.lang.String">
-                <hbase:entry key="importtsv.columns" value="HBASE_ROWEY,cf"/>
+                <hbase:entry key="importtsv.columns" value="HBASE_ROW_KEY,cf"/>
                 <hbase:entry key="importtsv.bulk.output1" value="/tmp/hbload"/>
                 <!--<hbase:entry key="importtsv.value.encrypts" value="chars"/>-->
                 <hbase:entry key="importtsv.mapper.class" value="com.example.service.mapreduce.TsvImporterPutMapper"/>
@@ -317,7 +317,7 @@
         <hbase:property name="delay" value="900"/>
         <hbase:property name="propertiesMap">
             <hbase:map key-type="java.lang.String" value-type="java.lang.String">
-                <hbase:entry key="importtsv.columns" value="HBASE_ROWEY,cf"/>
+                <hbase:entry key="importtsv.columns" value="HBASE_ROW_KEY,cf"/>
                 <hbase:entry key="importtsv.bulk.output1" value="/tmp/hbload"/>
                 <!--<hbase:entry key="importtsv.value.encrypts" value="chars"/>-->
                 <hbase:entry key="importtsv.mapper.class" value="com.example.service.mapreduce.TsvImporterPutMapper"/>
@@ -340,7 +340,7 @@
         <hbase:property name="delay" value="900"/>
         <hbase:property name="propertiesMap">
             <hbase:map key-type="java.lang.String" value-type="java.lang.String">
-                <hbase:entry key="importtsv.columns" value="HBASE_ROWEY,cf"/>
+                <hbase:entry key="importtsv.columns" value="HBASE_ROW_KEY,cf"/>
                 <hbase:entry key="importtsv.bulk.output1" value="/tmp/hbload"/>
                 <!--<hbase:entry key="importtsv.value.encrypts" value="chars"/>-->
                 <hbase:entry key="importtsv.mapper.class" value="com.example.service.mapreduce.TsvImporterPutMapper"/>
@@ -363,7 +363,7 @@
         <hbase:property name="delay" value="900"/>
         <hbase:property name="propertiesMap">
             <hbase:map key-type="java.lang.String" value-type="java.lang.String">
-                <hbase:entry key="importtsv.columns" value="HBASE_ROWEY,cf"/>
+                <hbase:entry key="importtsv.columns" value="HBASE_ROW_KEY,cf"/>
                 <hbase:entry key="importtsv.bulk.output1" value="/tmp/hbload"/>
                 <!--<hbase:entry key="importtsv.value.encrypts" value="chars"/>-->
                 <hbase:entry key="importtsv.mapper.class" value="com.example.service.mapreduce.TsvImporterPutMapper"/>
@@ -386,7 +386,7 @@
         <hbase:property name="delay" value="900"/>
         <hbase:property name="propertiesMap">
             <hbase:map key-type="java.lang.String" value-type="java.lang.String">
-                <hbase:entry key="importtsv.columns" value="HBASE_ROWEY,cf"/>
+                <hbase:entry key="importtsv.columns" value="HBASE_ROW_KEY,cf"/>
                 <hbase:entry key="importtsv.bulk.output1" value="/tmp/hbload"/>
                 <!--<hbase:entry key="importtsv.value.encrypts" value="chars"/>-->
                 <hbase:entry key="importtsv.mapper.class" value="com.example.service.mapreduce.TsvImporterPutMapper"/>
@@ -409,7 +409,7 @@
         <hbase:property name="delay" value="900"/>
         <hbase:property name="propertiesMap">
             <hbase:map key-type="java.lang.String" value-type="java.lang.String">
-                <hbase:entry key="importtsv.columns" value="HBASE_ROWEY,cf"/>
+                <hbase:entry key="importtsv.columns" value="HBASE_ROW_KEY,cf"/>
                 <hbase:entry key="importtsv.bulk.output1" value="/tmp/hbload"/>
                 <!--<hbase:entry key="importtsv.value.encrypts" value="chars"/>-->
                 <hbase:entry key="importtsv.mapper.class" value="com.example.service.mapreduce.TsvImporterPutMapper"/>
@@ -432,7 +432,7 @@
         <hbase:property name="delay" value="900"/>
         <hbase:property name="propertiesMap">
             <hbase:map key-type="java.lang.String" value-type="java.lang.String">
-                <hbase:entry key="importtsv.columns" value="HBASE_ROWEY,cf"/>
+                <hbase:entry key="importtsv.columns" value="HBASE_ROW_KEY,cf"/>
                 <hbase:entry key="importtsv.bulk.output1" value="/tmp/hbload"/>
                 <!--<hbase:entry key="importtsv.value.encrypts" value="chars"/>-->
                 <hbase:entry key="importtsv.mapper.class" value="com.example.service.mapreduce.TsvImporterPutMapper"/>
@@ -455,7 +455,7 @@
         <hbase:property name="delay" value="900"/>
         <hbase:property name="propertiesMap">
             <hbase:map key-type="java.lang.String" value-type="java.lang.String">
-                <hbase:entry key="importtsv.columns" value="HBASE_ROWEY,cf"/>
+                <hbase:entry key="importtsv.columns" value="HBASE_ROW_KEY,cf"/>
                 <hbase:entry key="importtsv.bulk.output1" value="/tmp/hbload"/>
                 <!--<hbase:entry key="importtsv.value.encrypts" value="chars"/>-->
                 <hbase:entry key="importtsv.mapper.class" value="com.example.service.mapreduce.TsvImporterPutMapper"/>
@@ -478,7 +478,7 @@
         <hbase:property name="delay" value="900"/>
         <hbase:property name="propertiesMap">
             <hbase:map key-type="java.lang.String" value-type="java.lang.String">
-                <hbase:entry key="importtsv.columns" value="HBASE_ROWEY,cf"/>
+                <hbase:entry key="importtsv.columns" value="HBASE_ROW_KEY,cf"/>
                 <hbase:entry key="importtsv.bulk.output1" value="/tmp/hbload"/>
                 <!--<hbase:entry key="importtsv.value.encrypts" value="chars"/>-->
                 <hbase:entry key="importtsv.mapper.class" value="com.example.service.mapreduce.TsvImporterPutMapper"/>
@@ -502,7 +502,7 @@
         <hbase:property name="delay" value="900"/>
         <hbase:property name="propertiesMap">
             <hbase:map key-type="java.lang.String" value-type="java.lang.String">
-                <hbase:entry key="importtsv.columns" value="HBASE_ROWEY,cf"/>
+                <hbase:entry key="importtsv.columns" value="HBASE_ROW_KEY,cf"/>
                 <hbase:entry key="importtsv.bulk.output1" value="/tmp/hbload"/>
                 <!--<hbase:entry key="importtsv.value.encrypts" value="chars"/>-->
                 <hbase:entry key="importtsv.mapper.class" value="com.example.service.mapreduce.TsvImporterPutMapper"/>
@@ -525,7 +525,7 @@
         <hbase:property name="delay" value="900"/>
         <hbase:property name="propertiesMap">
             <hbase:map key-type="java.lang.String" value-type="java.lang.String">
-                <hbase:entry key="importtsv.columns" value="HBASE_ROWEY,cf"/>
+                <hbase:entry key="importtsv.columns" value="HBASE_ROW_KEY,cf"/>
                 <hbase:entry key="importtsv.bulk.output1" value="/tmp/hbload"/>
                 <!--<hbase:entry key="importtsv.value.encrypts" value="chars"/>-->
                 <hbase:entry key="importtsv.mapper.class" value="com.example.service.mapreduce.TsvImporterPutMapper"/>
@@ -539,18 +539,5 @@
             </hbase:map>
         </hbase:property>
     </hbase:bean>
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 </hbase:beans>

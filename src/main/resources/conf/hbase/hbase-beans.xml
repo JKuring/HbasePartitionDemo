@@ -48,7 +48,7 @@
     <hbase:bean id="Create_Job_Trigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <hbase:property name="jobDetail" ref="Create_Job"/>
         <hbase:property name="startDelay" value="10000"/><!-- 调度工厂实例化后，经过0秒开始执行调度 900000-->
-        <hbase:property name="cronExpression" value="0 0 5 * * ?"/><!-- 每天5点执行 -->
+        <hbase:property name="cronExpression" value="0 30 18 * * ?"/><!-- 每天5点执行 -->
         <!--<hbase:property name="cronExpression" value="0 0 18 * * ?"/>&lt;!&ndash; 每2秒调度一次 &ndash;&gt;-->
 
     </hbase:bean>
@@ -61,30 +61,30 @@
         </hbase:property>
     </hbase:bean>
 
-    <!--&lt;!&ndash;入库任务&ndash;&gt;-->
-    <!--&lt;!&ndash;配置作业类&ndash;&gt;-->
-    <!--<hbase:bean id="Load_Job" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">-->
-    <!--<hbase:property name="targetObject">-->
-    <!--<hbase:bean class="com.example.service.JobServiceImpl"/>-->
-    <!--</hbase:property>-->
-    <!--<hbase:property name="targetMethod" value="doPartitionTableJobs"/>-->
-    <!--<hbase:property name="concurrent" value="false"/>-->
-    <!--&lt;!&ndash; 作业不并发调度 &ndash;&gt;-->
-    <!--</hbase:bean>-->
-    <!--&lt;!&ndash;配置作业调度的触发方式&ndash;&gt;-->
-    <!--<hbase:bean id="Load_Job_Trigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">-->
-    <!--<hbase:property name="jobDetail" ref="Load_Job"/>-->
-    <!--<hbase:property name="startDelay" value="60000"/>&lt;!&ndash; 调度工厂实例化后，经过0秒开始执行调度 900000&ndash;&gt;-->
-    <!--<hbase:property name="repeatInterval" value="300000"/>&lt;!&ndash; 每2秒调度一次 &ndash;&gt;-->
-    <!--</hbase:bean>-->
-    <!--&lt;!&ndash;配置调度工厂&ndash;&gt;-->
-    <!--<hbase:bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">-->
-    <!--<hbase:property name="triggers">-->
-    <!--<hbase:list>-->
-    <!--<hbase:ref bean="Load_Job_Trigger"/>-->
-    <!--</hbase:list>-->
-    <!--</hbase:property>-->
-    <!--</hbase:bean>-->
+    <!--入库任务-->
+    <!--配置作业类-->
+    <hbase:bean id="Load_Job" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+        <hbase:property name="targetObject">
+            <hbase:bean class="com.example.service.JobServiceImpl"/>
+        </hbase:property>
+        <hbase:property name="targetMethod" value="doPartitionTableJobs"/>
+        <hbase:property name="concurrent" value="false"/>
+    <!-- 作业不并发调度 -->
+    </hbase:bean>
+    <!--配置作业调度的触发方式-->
+    <hbase:bean id="Load_Job_Trigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+        <hbase:property name="jobDetail" ref="Load_Job"/>
+        <hbase:property name="startDelay" value="60000"/><!-- 调度工厂实例化后，经过0秒开始执行调度 900000-->
+        <hbase:property name="repeatInterval" value="300000"/><!-- 每5 minutes 调度一次 -->
+    </hbase:bean>
+    <!--配置调度工厂-->
+    <hbase:bean class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+        <hbase:property name="triggers">
+        <hbase:list>
+            <hbase:ref bean="Load_Job_Trigger"/>
+        </hbase:list>
+        </hbase:property>
+    </hbase:bean>
 
     <!--删表任务-->
     <!--配置作业类-->
@@ -100,7 +100,7 @@
     <hbase:bean id="Delete_Job_Trigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
         <hbase:property name="jobDetail" ref="Delete_Job"/>
         <hbase:property name="startDelay" value="30000"/><!-- 调度工厂实例化后，经过0秒开始执行调度 900000-->
-        <hbase:property name="cronExpression" value="0 30 13 * * ?"/><!-- 每 -->
+        <hbase:property name="cronExpression" value="0 35 18 * * ?"/><!-- 每 -->
         <!--<hbase:property name="cronExpression" value="0 5 18 1/4 * ?"/>&lt;!&ndash; 每2秒调度一次 &ndash;&gt;-->
 
     </hbase:bean>

@@ -14,6 +14,9 @@ HBaseServiceImpl HBase 服务类 编写 partition 部分，各个操作的路径
 JobServiceImpl 任务执行类 编写完成 未测试
 TaskServiceImpl 任务存储类
 
+注意;
+1、该程序中一定是先有第一次创建过程才会触发加载过程。
+
 xdr_data:ps_gn_http_event_D_2016120400
 xdr_data:ps_gn_http_event_D_2016120500
 xdr_data:ps_gn_http_event_D_2016120600

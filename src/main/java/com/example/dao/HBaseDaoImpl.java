@@ -54,8 +54,6 @@ public class HBaseDaoImpl implements HBaseDao<HBaseEntity> {
      * @param configuration
      */
     public HBaseDaoImpl(Configuration configuration) {
-        // 屏蔽spring data装载的配置
-//        this.configuration = HBaseConfiguration.create();
         this.configuration = configuration;
         if (this.configuration == null) {
             logger.error("configuration is null!");
@@ -64,19 +62,14 @@ public class HBaseDaoImpl implements HBaseDao<HBaseEntity> {
             logger.info("successful Fetch configuration!");
             // add kerberos
             this.configuration = HBaseKerberos.getConfiguration(this.configuration);
-            // spring template handle, add configuration.
-//            setConfiguration(this.configuration);
-//            afterPropertiesSet();
         }
     }
 
     private synchronized Admin createAdmin(){
         try {
             if (this.connection == null || this.connection.isClosed()) {
-//                this.connection = ConnectionFactory.createConnection(this.configuration);
                 // multi connections
             this.connection = ConnectionFactory.createConnection(this.configuration, Executors.newCachedThreadPool());
-//                this.admin = this.connection.getAdmin();
             }
             return this.connection.getAdmin();
         } catch (Exception e) {
@@ -108,13 +101,13 @@ public class HBaseDaoImpl implements HBaseDao<HBaseEntity> {
         Admin admin = createAdmin();
         if (!admin.tableExists(tableName)) {
             HTableDescriptor hTableDescriptor = new HTableDescriptor(tableName);
-            hTableDescriptor.setCompactionEnabled(true);
             Set<String> cfSet = getColumnFamilies(columns);
             for (String cf : cfSet) {
                 HColumnDescriptor hcd = new HColumnDescriptor(Bytes.toBytes(cf));
                 hcd.setMinVersions(version);
                 hcd.setTimeToLive(ttl);
-                hcd.setCompactionCompressionType(Compression.getCompressionAlgorithmByName(compressionType));
+                hcd.setCompressionType(Compression.getCompressionAlgorithmByName(compressionType));
+//                hcd.getConfiguration().put()
                 hTableDescriptor.addFamily(hcd);
             }
             // coprocessor
@@ -134,7 +127,8 @@ public class HBaseDaoImpl implements HBaseDao<HBaseEntity> {
                 logger.debug("create the table without SplitKeysFile.");
                 admin.createTable(hTableDescriptor);
             }
-            admin.close();
+            // 使用连接池，可以不关闭；实际也是关闭connection
+//            admin.close();
         }else {
             logger.warn("the {} table is existence.", tableName.getNameAsString());
         }
@@ -211,5 +205,21 @@ public class HBaseDaoImpl implements HBaseDao<HBaseEntity> {
 
     public void setConfiguration(Configuration configuration) {
         this.configuration = configuration;
+    }
+
+    public Connection getConnection() {
+        try {
+            if (this.connection == null || this.connection.isClosed()) {
+                // multi connections
+                this.connection = ConnectionFactory.createConnection(this.configuration, Executors.newCachedThreadPool());
+            }
+        }catch (Exception e){
+            logger.error("Failed to get connection, exception: {].",e.getMessage());
+        }
+        return connection;
+    }
+
+    public void setConnection(Connection connection) {
+        this.connection = connection;
     }
 }

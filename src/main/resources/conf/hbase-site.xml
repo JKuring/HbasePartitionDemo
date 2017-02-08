@@ -262,7 +262,7 @@
 </property>
 <property>
 <name>hbase.rpc.timeout</name>
-<value>60000</value>
+<value>3600000</value>
 </property>
 <property>
 <name>hbase.superuser</name>
@@ -278,7 +278,7 @@
 </property>
 <property>
 <name>hbase.coprocessor.region.classes</name>
-<value>org.apache.hadoop.hbase.security.token.TokenProvider,org.apache.hadoop.hbase.security.access.AccessController,org.apache.hadoop.hbase.security.access.SecureBulkLoadEndpoint,org.apache.hadoop.hbase.index.coprocessor.regionserver.IndexRegionObserver</value>
+<value>org.apache.hadoop.hbase.security.token.TokenProvider,org.apache.hadoop.hbase.security.access.AccessController,org.apache.hadoop.hbase.index.coprocessor.regionserver.IndexRegionObserver</value>
 </property>
 <property>
 <name>hbase.master.ipc.address</name>

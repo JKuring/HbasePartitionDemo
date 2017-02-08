@@ -3,9 +3,13 @@ package com.example.utils;
 import com.example.utils.kerberos.HBaseKerberos;
 import com.example.utils.time.TimeTransform;
 import org.apache.hadoop.conf.Configuration;
+import org.apache.hadoop.fs.FileSystem;
+import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hbase.client.HConnection;
 import org.apache.hadoop.hbase.client.HConnectionManager;
+import org.apache.hadoop.hbase.client.HTable;
 import org.apache.hadoop.hbase.mapreduce.ImportTsv;
+import org.apache.hadoop.hbase.mapreduce.LoadIncrementalHFiles;
 import org.apache.hadoop.hbase.util.Bytes;
 import org.apache.hadoop.mapreduce.Job;
 import org.slf4j.Logger;
@@ -25,10 +29,10 @@ public class HBaseUtils {
 
     private static final Logger logger = LoggerFactory.getLogger(HBaseUtils.class);
 
-    public static boolean uploadData(Configuration configuration, String tableName, String loadingPath) throws Exception {
+    public static boolean createHFile(Configuration configuration, String tableName, String loadingPath) throws Exception {
         logger.info("Upload data to {}, the load path is {}.", tableName, loadingPath);
-        logger.debug("importtsv.columns: {}.", configuration.get("importtsv.columns"));
-        logger.debug("importtsv.bulk.output: {}.", configuration.get("importtsv.bulk.output"));
+        logger.info("importtsv.columns: {}.", configuration.get("importtsv.columns"));
+        logger.info("importtsv.bulk.output: {}.", configuration.get("importtsv.bulk.output"));
         Job job = ImportTsv.createSubmittableJob(configuration, new String[]{tableName, loadingPath});
 //        int status = ToolRunner.run(new ImportTsv(), new String[]{tableName, loadingPath});
         return job.waitForCompletion(true);
@@ -108,6 +112,37 @@ public class HBaseUtils {
 //            Job var13 = ImportTsv.createSubmittableJob(importTsv.getConf(), otherArgs);
 //            return var13.waitForCompletion(true) ? true : false;
 //        }
+    }
+
+    public static boolean upLoadHFile(Configuration configuration, HTable table, Path dataPath){
+        boolean result = false;
+        String tableName = Bytes.toString(table.getName().getName());
+        try {
+            LoadIncrementalHFiles loadIncrementalHFiles = new LoadIncrementalHFiles(configuration);
+            loadIncrementalHFiles.doBulkLoad(dataPath,table);
+            result = true;
+        }catch (Exception e){
+            logger.error("Can't upload the data of {} minutes, exception: {}.",dataPath.getName(),e.getMessage());
+        }finally {
+            if ( table != null){
+                try {
+                    table.close();
+                } catch (IOException e) {
+                    logger.error("Can't close the table {}, exception: {}.",table.getName(),e.getMessage());
+                }
+            }
+            logger.info("Incremental load complete for table=" + tableName);
+
+            logger.info("Removing output directory {}", dataPath);
+            try {
+                if (!FileSystem.get(configuration).delete(dataPath, true)) {
+                    logger.error("Removing output directory {} failed", dataPath);
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return result;
     }
 
     public static byte[][] getSplitKeys(File file) throws IOException {

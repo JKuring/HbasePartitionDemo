@@ -6,7 +6,9 @@ import com.example.interfaces.dto.JobEntity;
 import com.example.interfaces.service.HBaseService;
 import com.example.interfaces.service.TaskService;
 import com.example.utils.HBaseUtils;
+import org.apache.hadoop.fs.Path;
 import org.apache.hadoop.hbase.TableName;
+import org.apache.hadoop.hbase.client.HTable;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -89,27 +91,35 @@ public class HBaseServiceImpl implements HBaseService<JobEntity> {
     public boolean partition(JobEntity jobEntity) {
         boolean result = false;
         HBaseEntity hBaseEntity = (HBaseEntity) jobEntity.getTableEntity();
-        String name = hBaseEntity.getName();
-        Map tableParametters = jobEntity.getPropertiesMap();
-        long currentTime = System.currentTimeMillis();
+        String tableName = hBaseEntity.getName();
+        if (hBaseEntity.isCurrentIsCreated()) {
+            Map tableParametters = jobEntity.getPropertiesMap();
+            long currentTime = System.currentTimeMillis();
 
-        String currentTimeTableName = HBaseUtils.getCurrentTimeTableName(name,currentTime,jobEntity.getDelay(),jobEntity.getGranularity());
-        String[] tmpTableName = name.split(":");
-        String tmpPath = HBaseUtils.getCurrentTimePath(currentTime,jobEntity.getDelay());
-        String dataPath = HADOOP_USER_ROOT + jobEntity.getDataPath() + tmpPath;
-        tableParametters.put("importtsv.bulk.output", tableParametters.get("importtsv.bulk.output1") + "/" + tmpTableName[0] + "_" + tmpTableName[1] + tmpPath);
+            String currentTimeTableName = HBaseUtils.getCurrentTimeTableName(tableName, currentTime, jobEntity.getDelay(), jobEntity.getGranularity());
+            String[] tmpTableName = tableName.split(":");
+            String tmpPath = HBaseUtils.getCurrentTimePath(currentTime, jobEntity.getDelay());
+            String dataPath = HADOOP_USER_ROOT + jobEntity.getDataPath() + tmpPath;
+            String outputPath = tableParametters.get("importtsv.bulk.output1") + "/" + tmpTableName[0] + "_" + tmpTableName[1];
+            tableParametters.put("importtsv.bulk.output", outputPath + tmpPath);
 
-        logger.info("tmp path: {}.",tmpPath);
-        logger.info("data path: {}.",dataPath);
-        //加载为系统参数
-        jobEntity.addSystemProperties(hBaseDao.getConfiguration());
-        try {
-            if (!HBaseUtils.uploadData(hBaseDao.getConfiguration(), currentTimeTableName, dataPath)) {
-                logger.warn("Upload data failing! Please clean dirty data, and try again later.");
+            //加载为系统参数
+            jobEntity.addSystemProperties(hBaseDao.getConfiguration());
+            try {
+                if (!HBaseUtils.createHFile(hBaseDao.getConfiguration(), currentTimeTableName, dataPath)) {
+                    logger.error("Upload data failing! Please clean dirty data, and try again later.");
+                }else {
+                    Path hdfsPath = new Path(outputPath + tmpPath);
+                    if(HBaseUtils.upLoadHFile(hBaseDao.getConfiguration(),
+                            (HTable)hBaseDao.getConnection().getTable(TableName.valueOf(currentTimeTableName)), hdfsPath)){
+                        result = true;
+                    }
+                }
+            } catch (Exception e) {
+                logger.error("Upload data failing! Upload data to {}, the load path is {}.", currentTimeTableName, dataPath);
             }
-            result = true;
-        } catch (Exception e) {
-            logger.error("Upload data failing! Upload data to {}, the load path is {}.", currentTimeTableName, dataPath);
+        }else {
+            logger.warn("the table {} has been not created.",tableName);
         }
         return result;
     }

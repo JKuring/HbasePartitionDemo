@@ -41,12 +41,6 @@ public class TsvImporterPutMapper extends Mapper<LongWritable, Text, ImmutableBy
     private String rowKeySeparator = SEP_DEFAULT;
     private boolean skipBadLines;
     private Counter badLineCount;
-    private String[] columnK;
-    private String[] strategyK;
-    private String[] encryptKeys;
-    private String[] encryptValues;
-    private char[] KEYNUM_ENCRYPT_MAP = "8374012596".toCharArray();
-    private char[] KEYNUM_DECRYPT_MAP = "4561379208".toCharArray();
 
     public boolean getSkipBadLines() {
         return this.skipBadLines;
@@ -60,11 +54,11 @@ public class TsvImporterPutMapper extends Mapper<LongWritable, Text, ImmutableBy
         this.badLineCount.increment(count);
     }
 
-    protected void setup(Context context) {
+    protected void setup(Mapper<LongWritable, Text, ImmutableBytesWritable, Put>.Context context) {
         doSetup(context);
     }
 
-    protected void doSetup(Context context) {
+    protected void doSetup(Mapper<LongWritable, Text, ImmutableBytesWritable, Put>.Context context) {
         Configuration conf = context.getConfiguration();
 
         this.separator = conf.get("importtsv.separator");
@@ -122,9 +116,15 @@ public class TsvImporterPutMapper extends Mapper<LongWritable, Text, ImmutableBy
 
     }
 
+    private String[] columnK;
+    private String[] strategyK;
+
+    private String[] encryptKeys;
+    private String[] encryptValues;
+
     @SuppressWarnings("deprecation")
     public void map(LongWritable offset, Text value,
-                    Context context) throws IOException {
+                    Mapper<LongWritable, Text, ImmutableBytesWritable, Put>.Context context) throws IOException {
         try {
             String val = value + "";
             String row = buildRowkey(val);
@@ -208,7 +208,7 @@ public class TsvImporterPutMapper extends Mapper<LongWritable, Text, ImmutableBy
                 }
             }
 
-            if (part == null || part.length() == 0)
+            if (part == null ||  part.length() == 0 )
                 return null;
 
             part = keyStrategyChange(part, i);
@@ -313,7 +313,7 @@ public class TsvImporterPutMapper extends Mapper<LongWritable, Text, ImmutableBy
         String hs = "";
         String stmp = "";
         for (int i = 0; i < bytes.length; i++) {
-            stmp = (Integer.toHexString(bytes[i] & 0XFF));
+            stmp = (java.lang.Integer.toHexString(bytes[i] & 0XFF));
             if (stmp.length() == 1)
                 hs = hs + "0" + stmp;
             else
@@ -361,6 +361,9 @@ public class TsvImporterPutMapper extends Mapper<LongWritable, Text, ImmutableBy
         }
         return part;
     }
+
+    private char[] KEYNUM_ENCRYPT_MAP = "8374012596".toCharArray();
+    private char[] KEYNUM_DECRYPT_MAP = "4561379208".toCharArray();
 
     public String encryptChars(String text, String charset) {
         try {

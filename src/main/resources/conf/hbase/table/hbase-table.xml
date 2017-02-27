@@ -4,7 +4,7 @@
              xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!--tables-->
-    <hbase:bean id="xdr_data:ps_gn_dns_event" class="com.example.data.entity.HBaseEntityImpl" >
+    <hbase:bean id="xdr_data:ps_gn_dns_event" class="com.example.data.entity.HBaseEntityImpl">
         <hbase:constructor-arg name="tableName" value="xdr_data:ps_gn_dns_event"/>
         <!-- table constructor-->
         <hbase:property name="columns" value="cf"/>

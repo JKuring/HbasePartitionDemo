@@ -28,11 +28,11 @@
 
     <dependencies>
         <!--spring boot-->
-        <!--<dependency>-->
-            <!--<groupId>org.mybatis.spring.boot</groupId>-->
-            <!--<artifactId>mybatis-spring-boot-starter</artifactId>-->
+        <dependency>
+            <groupId>org.mybatis.spring.boot</groupId>
+            <artifactId>mybatis-spring-boot-starter</artifactId>
             <!--<version>1.1.1</version>-->
-        <!--</dependency>-->
+        </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -131,7 +131,7 @@
                     <target>1.7</target>
                     <encoding>UTF-8</encoding>
                     <compilerArguments>
-                        <extdirs>${project.basedir}/lib</extdirs><!--指定外部lib-->
+                        <extdirs>${project.basedir}/lib</extdirs><!--编译依赖指定外部lib-->
                     </compilerArguments>
                 </configuration>
             </plugin>

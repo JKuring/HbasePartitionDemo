@@ -15,6 +15,7 @@ import java.util.Map;
 
 /**
  * Created by linghang.kong on 2016/12/27.
+ * 考虑对job的操作为原子性、一致性，未实现。
  */
 public class JobServiceImpl implements JobService {
 
